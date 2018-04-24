@@ -2,48 +2,57 @@ import random
 import numpy as np
 from collections import Counter
 import RPi.GPIO as GPIO
-
-# This is only used for time delays... standard Python stuff.
 import time
+import Adafruit_PCA9685
 
-GPIO.setmode(GPIO.BOARD)
-pin_number = 3
-GPIO.setup(pin_number, GPIO.OUT)
+pwm = Adafruit_PCA9685.PCA9685()
+
+servo_min = 150  # Min pulse length out of 4096
+servo_max = 600  # Max pulse length out of 4096
+servo_mid = 400
+# Helper function to make setting a servo pulse width simpler.
+def set_servo_pulse(channel, pulse):
+    pulse_length = 1000000    # 1,000,000 us per second
+    pulse_length //= 60       # 60 Hz
+    print('{0}us per period'.format(pulse_length))
+    pulse_length //= 4096     # 12 bits of resolution
+    print('{0}us per bit'.format(pulse_length))
+    pulse *= 1000
+    pulse //= pulse_length
+    pwm.set_pwm(channel, 0, pulse)
+
+# Set frequency to 60hz, good for servos.
+pwm.set_pwm_freq(60)
+
+print('Moving servo on channel 0, press Ctrl-C to quit...')
 
 
-frequency_hertz = 50
-pwm = GPIO.PWM(pin_number, frequency_hertz)
-pin_number = 5
-GPIO.setup(pin_number, GPIO.OUT)
-frequency_hertz = 50
-pwm2 = GPIO.PWM(pin_number, frequency_hertz)
-
-left_position = 0.40
-right_position = 2.5
-middle_position = (right_position - left_position) / 2 + left_position
 def drive(action):
-    ms_per_cycle = 1000 / frequency_hertz
-    duty_cycle_percentage = [0]*2
+    servo = [0]*4
     if action[0] == 0:
-        position = right_position
+        servo[0] = servo_max
     else:
-        position = middle_position
-    duty_cycle_percentage[0] = position * 100 / ms_per_cycle
+        servo[0] = servo_mid
     if action[1] == 0:
-        position = right_position
+        servo[1] = servo_max
     else:
-        position = middle_position
-    duty_cycle_percentage[1] = position * 100 / ms_per_cycle
+        servo[1] = servo_mid
+    if action[2] == 0:
+        servo[2] = servo_max
+    else:
+        servo[2] = servo_mid
+    if action[3] == 0:
+        servo[3] = servo_max
+    else:
+        servo[3] = servo_mid
     
-    # Iterate through the positions sequence 3 times.
-
+    # Iterate through the                                                                                                                                      positions sequence 3 times.
     
-    print("Position: " + str(position))
     
-    pwm.start(duty_cycle_percentage[0])
-    pwm2.start(duty_cycle_percentage[1])
-
-    time.sleep(.2)
+    for i in range(4):
+        pwm.set_pwm(i, 0, servo[i])
+    
+    time.sleep(.1)
 
 LR = 1e-3
 goal_steps = 30
@@ -72,10 +81,11 @@ def initial_population():
             action[0] = random.randrange(0,2)
             
             action[1] = random.randrange(0,2)
-            drive(action)
+            
             action[2] = random.randrange(0,2)
             # SetAngle(action[2])
             action[3] = random.randrange(0,2)
+            drive(action)
             # SetAngle(action[3])
             observation = action
             # notice that the observation is returned FROM the action
