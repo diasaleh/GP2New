@@ -10,6 +10,60 @@ import time
 
 import random
 from RL_brain import DeepQNetwork
+
+import numpy as np
+import Adafruit_PCA9685
+
+pwm = Adafruit_PCA9685.PCA9685()
+
+servo_min = 150  # Min pulse length out of 4096
+servo_max = 600  # Max pulse length out of 4096
+servo_mid = 400
+# Helper function to make setting a servo pulse width simpler.
+def set_servo_pulse(channel, pulse):
+    pulse_length = 1000000    # 1,000,000 us per second
+    pulse_length //= 60       # 60 Hz
+    print('{0}us per period'.format(pulse_length))
+    pulse_length //= 4096     # 12 bits of resolution
+    print('{0}us per bit'.format(pulse_length))
+    pulse *= 1000
+    pulse //= pulse_length
+    pwm.set_pwm(channel, 0, pulse)
+
+# Set frequency to 60hz, good for servos.
+pwm.set_pwm_freq(60)
+
+print('Moving servo on channel 0, press Ctrl-C to quit...')
+
+
+def drive(action):
+    servo = [0]*4
+    if action[0] == 0:
+        servo[0] = servo_max
+    else:
+        servo[0] = servo_mid
+    if action[1] == 0:
+        servo[1] = servo_max
+    else:
+        servo[1] = servo_mid
+    if action[2] == 0:
+        servo[2] = servo_max
+    else:
+        servo[2] = servo_mid
+    if action[3] == 0:
+        servo[3] = servo_max
+    else:
+        servo[3] = servo_mid
+    
+    # Iterate through the                                                                                                                                      positions sequence 3 times.
+    
+    
+    for i in range(4):
+        pwm.set_pwm(i, 0, servo[i])
+    
+    time.sleep(.1)
+
+
 action_num = 16
 observation_num = 4
 distance_riq = 0
@@ -22,8 +76,6 @@ RL = DeepQNetwork(n_actions=action_num,
 total_steps = 0
 actionDrive = [0,0,0,0]
 
-def drive(x):
-  x = 1
 
 def convert(action):
   print(action)
@@ -113,3 +165,11 @@ for i_episode in range(100):
 
 
 RL.plot_cost()
+
+# Done.  Terminate all signals and relax the motor.
+pwm.stop()
+
+# We have shut all our stuff down but we should do a complete
+# close on all GPIO stuff.  There's only one copy of real hardware.
+# We need to be polite and put it back the way we found it.
+GPIO.cleanup()
