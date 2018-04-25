@@ -60,12 +60,11 @@ def drive(action):
     
     for i in range(4):
         pwm.set_pwm(i, 0, servo[i])
-    
     time.sleep(.1)
 
 
-action_num = 16
-observation_num = 4
+action_num = 256
+observation_num = 8
 distance_riq = 0
 RL = DeepQNetwork(n_actions=action_num,
                   n_features=observation_num,
@@ -78,62 +77,65 @@ actionDrive = [0,0,0,0]
 
 
 def convert(action):
-  print(action)
-  if action == 0:
-    actionDrive = [0,0,0,0]
+    w=np.array(action)
+    print (w)
+    actionDrive = '{0:08b}'.format(int(w[0][0]))
     drive(actionDrive)
-  elif action == 1:
-    actionDrive = [0,0,0,1]
-    drive(actionDrive)
-  elif action == 2:
-    actionDrive = [0,0,1,0]
-    drive(actionDrive)
-  elif action == 3:
-    actionDrive = [0,0,1,1]
-    drive(actionDrive)
-  elif action == 4:
-    actionDrive = [0,1,0,0]
-    drive(actionDrive)
-  elif action == 5:
-    actionDrive = [0,1,0,1]
-    drive(actionDrive)
-  elif action == 6:
-    actionDrive = [0,1,1,0]
-    drive(actionDrive)
-  elif action == 7:
-    actionDrive = [0,1,1,1]
-    drive(actionDrive)
-  elif action == 8:
-    actionDrive = [1,0,0,0]
-    drive(actionDrive)
-  elif action == 9:
-    actionDrive = [1,0,0,1]
-    drive(actionDrive)
-  elif action == 10:
-    actionDrive = [1,0,1,0]
-    drive(actionDrive)
-  elif action == 11:
-    actionDrive = [1,0,1,1]
-    drive(actionDrive)
-  elif action == 12:
-    actionDrive = [1,1,0,0]
-    drive(actionDrive)
-  elif action == 13:
-    actionDrive = [1,1,0,1]
-    drive(actionDrive)
-  elif action == 14:
-    actionDrive = [1,1,1,0]
-    drive(actionDrive)
-  else:
-    actionDrive = [1,1,1,1]
-    drive(actionDrive)
-  return actionDrive
+##  if action == 0:
+##    actionDrive = [0,0,0,0]
+##    drive(actionDrive)
+##  elif action == 1:
+##    actionDrive = [0,0,0,1]
+##    drive(actionDrive)
+##  elif action == 2:
+##    actionDrive = [0,0,1,0]
+##    drive(actionDrive)
+##  elif action == 3:
+##    actionDrive = [0,0,1,1]
+##    drive(actionDrive)
+##  elif action == 4:
+##    actionDrive = [0,1,0,0]
+##    drive(actionDrive)
+##  elif action == 5:
+##    actionDrive = [0,1,0,1]
+##    drive(actionDrive)
+##  elif action == 6:
+##    actionDrive = [0,1,1,0]
+##    drive(actionDrive)
+##  elif action == 7:
+##    actionDrive = [0,1,1,1]
+##    drive(actionDrive)
+##  elif action == 8:
+##    actionDrive = [1,0,0,0]
+##    drive(actionDrive)
+##  elif action == 9:
+##    actionDrive = [1,0,0,1]
+##    drive(actionDrive)
+##  elif action == 10:
+##    actionDrive = [1,0,1,0]
+##    drive(actionDrive)
+##  elif action == 11:
+##    actionDrive = [1,0,1,1]
+##    drive(actionDrive)
+##  elif action == 12:
+##    actionDrive = [1,1,0,0]
+##    drive(actionDrive)
+##  elif action == 13:
+##    actionDrive = [1,1,0,1]
+##    drive(actionDrive)
+##  elif action == 14:
+##    actionDrive = [1,1,1,0]
+##    drive(actionDrive)
+##  else:
+##    actionDrive = [1,1,1,1]
+##    drive(actionDrive)
+    return actionDrive
 
   #drive(actionDrive)
 
 for i_episode in range(100):
 
-    observation = [0,0,0,0]
+    observation = [0,0,0,0,0,0,0,0]
     convert(observation)
     ep_r = 0
     for _ in range(4):

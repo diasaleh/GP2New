@@ -126,11 +126,13 @@ class DeepQNetwork:
 
         if np.random.uniform() < self.epsilon:
             # forward feed the observation and get q value for every actions
-            actions_value = self.sess.run(self.q_eval, feed_dict={self.s: np.array(observation).reshape(1, 4)})
+            actions_value = self.sess.run(self.q_eval, feed_dict={self.s: np.array(observation).reshape(1, 8)})
             action = np.argmax(actions_value)
-            print(action)
+            print (action )
+            print("fdas")
         else:
-            action = random.randrange(0, self.n_actions)
+            action = np.random.randint(0, self.n_actions)
+            print (action )
         return action
 
     def learn(self):
