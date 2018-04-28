@@ -112,7 +112,7 @@ def drive(action):
     
     for i in range(8):
         pwm.set_pwm(i, 0, servo[i])
-   	time.sleep(.1)
+    time.sleep(.1)
 
 
 action_num = 2
@@ -186,7 +186,7 @@ def convert(action):
 
   #drive(actionDrive)
 
-for i_episode in range(100):
+for i_episode in range(30):
 
     observation = [0,0,0,0,0,0,0,0]
     ep_r = 0

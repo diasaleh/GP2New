@@ -186,7 +186,7 @@ def convert(action):
 
   #drive(actionDrive)
 
-for i_episode in range(100):
+for i_episode in range(30):
 
     observation = [0,0,0,0,0,0,0,0]
     ep_r = 0

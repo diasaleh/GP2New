@@ -1,16 +1,7 @@
-"""
-Deep Q network,
-
-Using:
-Tensorflow: 1.0
-gym: 0.7.3
-"""
 import RPi.GPIO as GPIO
 import time
-
 import random
 from RL_brain import DeepQNetwork
-
 import numpy as np
 import Adafruit_PCA9685
 #set GPIO Pins
@@ -54,7 +45,7 @@ def distance():
 pwm = Adafruit_PCA9685.PCA9685()
 
 servo_min = 150  # Min pulse length out of 4096
-servo_max = 500  # Max pulse length out of 4096
+servo_max = 600  # Max pulse length out of 4096
 servo_mid = 400
 # Helper function to make setting a servo pulse width simpler.
 def set_servo_pulse(channel, pulse):
@@ -112,8 +103,9 @@ def drive(action):
     
     for i in range(8):
         pwm.set_pwm(i, 0, servo[i])
-   	time.sleep(.1)
-
+	time.sleep(.1)
+	print("hi")
+    time.sleep(.5)
 
 action_num = 2
 observation_num = 8
@@ -193,7 +185,7 @@ for i_episode in range(100):
     for _ in range(4):
         predistance = distance()
         action = RL.choose_action(observation)
-        
+        print(predistance)
         actionDrive = convert(action)
 
         curdistance = distance()

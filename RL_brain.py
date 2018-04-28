@@ -129,11 +129,37 @@ class DeepQNetwork:
             actions_value = self.sess.run(self.q_eval, feed_dict={self.s: np.array(observation).reshape(1, 8)})
             action = np.argmax(actions_value)
             print (action )
-            print("fdas")
+        
         else:
-            action = np.random.randint(0, self.n_actions)
+            action = np.int64(np.random.randint(0, self.n_actions))
             print (action )
+        
         return action
+
+    def choose_action(self, observation):
+        # to have batch dimension when feed into tf placeholder
+
+        if np.random.uniform() < self.epsilon:
+            # forward feed the observation and get q value for every actions
+            actions_value = self.sess.run(self.q_eval, feed_dict={self.s: np.array(observation).reshape(1, 8)})
+            action = np.argmax(actions_value)
+            print (action )
+        
+        else:
+            action = np.int64(np.random.randint(0, self.n_actions))
+            print (action )
+        
+        return action   
+	
+    def forward_action(self, observation):
+        # to have batch dimension when feed into tf placeholde
+            # forward feed the observation and get q value for every action
+        actions_value = self.sess.run(self.q_eval, feed_dict={self.s: np.array(observation).reshape(1, 8)})
+        action = np.argmax(actions_value)
+        print (action )
+        
+        return action
+
 
     def learn(self):
         # check to replace target parameters
