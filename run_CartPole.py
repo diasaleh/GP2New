@@ -112,7 +112,7 @@ def drive(action):
     
     for i in range(8):
         pwm.set_pwm(i, 0, servo[i])
-   	time.sleep(.1)
+    time.sleep(.1)
 
 
 action_num = 2
@@ -198,7 +198,7 @@ for i_episode in range(100):
 
         curdistance = distance()
         divdistance = curdistance - predistance
-        print (divdistance)
+        print (action)
         print(actionDrive)
         observation_ = actionDrive
         
