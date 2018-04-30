@@ -22,7 +22,7 @@ address = 0x68       # via i2cdetect
 # Register
 power_mgmt_1 = 0x6b
 power_mgmt_2 = 0x6c
- 
+difreq =300 
 def read_byte(reg):
     return bus.read_byte_data(address, reg)
  
@@ -259,21 +259,23 @@ for i_episode in range(100):
     for _ in range(4):
         predistance = distance()
         action = RL.choose_action(observation)
-        
+        preacc = getMotion()
         actionDrive = convert(action)
-
+	curacc = getMotion()
         curdistance = distance()
         divdistance = curdistance - predistance
+	difacc = curacc-preacc
+
         print (action)
         print(actionDrive)
         observation_ = actionDrive
         
 
         # the smaller theta and closer to center the better
-        if divdistance > distance_riq:
-          reward = divdistance
+        if divacc > difreq:
+          reward = difacc
         else:
-          reward = -divdistance
+          reward = -difacc
 
         RL.store_transition(observation, action, reward, observation_)
 
