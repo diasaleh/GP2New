@@ -1,5 +1,5 @@
 import numpy as np
-from matplotlib import pyplot as plt
+# from matplotlib import pyplot as plt
 import keras
 from keras.models import Sequential
 from keras.layers import Dense, Activation, Dropout, Flatten, MaxPooling2D, Conv2D
@@ -226,8 +226,8 @@ for z in range(100):
 
     clear_output(wait=True)
     a = np.array(senses)
-    fig = plt.plot(a[:,0], c = 'r')
-    fig = plt.plot(a[:,1], c = 'b')
+    #fig = plt.plot(a[:,0], c = 'r')
+    #fig = plt.plot(a[:,1], c = 'b')
     #plt.show()
 
 axis = 0
@@ -237,15 +237,15 @@ std = np.std(senses, axis = 0)
 senses_norm = (senses - u)/std
 
 single_axis = np.array(senses_norm)[:,axis]
-fig = plt.plot(single_axis)
+#fig = plt.plot(single_axis)
 
 def line_fit(single_axis, joint_states):
     m, b = np.polyfit(single_axis, joint_states, 1)
     
     T = np.linspace(np.min(single_axis), np.max(single_axis))
 
-    fig = plt.scatter(single_axis, joint_states)
-    fig = plt.plot(T, [m*t + b for t in T])
+    # fig = plt.scatter(single_axis, joint_states)
+    # fig = plt.plot(T, [m*t + b for t in T])
 
     return m, b
 
@@ -283,7 +283,7 @@ for i in range(20):
         joint_angles.append(model.predict(np.array([[m, 0]]))[0])
 
     clear_output(wait=True)
-    fig = plt.plot(T, joint_angles)
+    #fig = plt.plot(T, joint_angles)
     #plt.show()
 
 def tilt(x,y):
