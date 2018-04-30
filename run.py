@@ -170,7 +170,7 @@ def drive(action):
     else:
         servo[6] = servo_mid
     if action[7] == 0:
-        servo[7] = servo_min
+        servo[7] = servo_max
     else:
         servo[7] = servo_mid
     # Iterate through the                                                                                                                                      positions sequence 3 times.
@@ -178,10 +178,10 @@ def drive(action):
     
     for i in range(8):
         pwm.set_pwm(i, 0, servo[i])
-    time.sleep(.1)
+    time.sleep(.5)
 
 
-action_num = 2
+action_num = 256
 observation_num = 8
 distance_riq = 0
 RL = DeepQNetwork(n_actions=action_num,
@@ -252,18 +252,18 @@ def convert(action):
 
   #drive(actionDrive)
 
-for i_episode in range(100):
+for i_episode in range(30):
 
     observation = [0,0,0,0,0,0,0,0]
     ep_r = 0
     for _ in range(4):
-        predistance = distance()
+        #predistance = distance()
         action = RL.choose_action(observation)
         preacc = getMotion()
         actionDrive = convert(action)
 	curacc = getMotion()
-        curdistance = distance()
-        divdistance = curdistance - predistance
+        #curdistance = distance()
+        #divdistance = curdistance - predistance
 	difacc = curacc-preacc
 
         print (action)
@@ -272,7 +272,7 @@ for i_episode in range(100):
         
 
         # the smaller theta and closer to center the better
-        if divacc > difreq:
+        if difacc > difreq:
           reward = difacc
         else:
           reward = -difacc
