@@ -1,6 +1,5 @@
 """
 Deep Q network,
-
 Using:
 Tensorflow: 1.0
 gym: 0.7.3
@@ -104,7 +103,7 @@ def drive(action):
     else:
         servo[6] = servo_mid
     if action[7] == 0:
-        servo[7] = servo_max
+        servo[7] = servo_min
     else:
         servo[7] = servo_mid
     # Iterate through the                                                                                                                                      positions sequence 3 times.
@@ -186,7 +185,7 @@ def convert(action):
 
   #drive(actionDrive)
 
-for i_episode in range(30):
+for i_episode in range(100):
 
     observation = [0,0,0,0,0,0,0,0]
     ep_r = 0
@@ -198,7 +197,7 @@ for i_episode in range(30):
 
         curdistance = distance()
         divdistance = curdistance - predistance
-        print (divdistance)
+        print (action)
         print(actionDrive)
         observation_ = actionDrive
         
