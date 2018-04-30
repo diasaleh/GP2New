@@ -183,7 +183,7 @@ last_s = s.copy()
 servo(s)
 sleep(1)
 
-for z in range(500):
+for z in range(0):
     print("hi")
     rd = np.random.randn(8) * 0.3
     rd[[1,3,5,7]] = 0
@@ -213,7 +213,8 @@ for z in range(500):
 
     np.savetxt('angles.txt', angles)
     np.savetxt('senses.txt', senses)
-
+angles = np.loadtxt('angles.txt')
+senses = np.loadtxt('senses.txt')
 axis = 0
 u = np.mean(senses, axis = 0)
 std = np.std(senses, axis = 0)
@@ -245,7 +246,7 @@ for desired_h in T:
 
 #multi input
 model = Sequential()
-model.add(Dense(64, input_dim=2)) #two for xy
+model.add(Dense(64, input_dim=8)) #two for xy
 model.add(Activation('tanh'))
 model.add(Dense(8))
 model.add(Activation('tanh'))
@@ -284,7 +285,7 @@ for i in range(30):
     for t in T:
         joint_angles = model.predict(np.array([[-t, 0]]))[0]
         servo(joint_angles)
-        sleep(.1)
+        sleep(.01)
 
 for i in range(30):
     print(str(i))
