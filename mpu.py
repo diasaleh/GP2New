@@ -275,38 +275,38 @@ def tilt(x,y):
 T = np.linspace(0, np.pi*2.0 , 20)
 
 
-for i in range(100)
-print(i)
+for i in range(100):
+    print(i+"")
     for t in T:
         joint_angles = model.predict(np.array([[t, t]]))[0]
         servo(joint_angles)
         sleep(.1)
 
-for i in range(100)
-print(i)
+for i in range(100):
+    print(i+"")
     for t in T:
         joint_angles = model.predict(np.array([[t, 0]]))[0]
         servo(joint_angles)
         sleep(.1)
 
-for i in range(100)
-print(i)
+for i in range(100):
+    print(i+"")
     for t in T:
         joint_angles = model.predict(np.array([[10, 0]]))[0]
         servo(joint_angles)
         sleep(.1)
 
-for i in range(100)
-print(i)
+for i in range(100):
+    print(i+"")
     for t in T:
         joint_angles = model.predict(np.array([[0, 10]]))[0]
         servo(joint_angles)
         sleep(.1)
 
-for i in range(100)
-print(i)
+for i in range(100):
+    print(i+"")
     for t in T:
-        joint_angles = model.predict(np.array([[100, 0s]]))[0]
+        joint_angles = model.predict(np.array([[100, 0]]))[0]
         servo(joint_angles)
         sleep(.1)
 
