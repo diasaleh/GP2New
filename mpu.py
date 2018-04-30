@@ -261,7 +261,7 @@ axis_vis = senses_norm[:,0]
 T = np.linspace(np.min(axis_vis), np.max(axis_vis), 30)
 
 for i in range(20):
-    model.fit(senses_norm[:,:2], np.array(angles), verbose=False, epochs=10)
+    model.fit(senses_norm, np.array(angles), verbose=False, epochs=10)
 
     joint_angles = []
     for m in T:
