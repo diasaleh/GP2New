@@ -246,7 +246,7 @@ for desired_h in T:
 
 #multi input
 model = Sequential()
-model.add(Dense(64, input_dim=8)) #two for xy
+model.add(Dense(64, input_dim=2)) #two for xy
 model.add(Activation('tanh'))
 model.add(Dense(8))
 model.add(Activation('tanh'))
@@ -261,7 +261,7 @@ axis_vis = senses_norm[:,0]
 T = np.linspace(np.min(axis_vis), np.max(axis_vis), 30)
 
 for i in range(20):
-    model.fit(senses_norm[:,:2], np.array(angles), verbose=False, epochs=10)
+    model.fit(senses_norm[:,6:8], np.array(angles), verbose=False, epochs=10)
 
     joint_angles = []
     for m in T:
@@ -292,7 +292,7 @@ for i in range(30):
     for t in T:
         joint_angles = model.predict(np.array([[0, t]]))[0]
         servo(joint_angles)
-        sleep(.1)
+        sleep(.01)
 
 for i in range(30):
     print(str(i))
