@@ -181,7 +181,7 @@ def drive(action):
     time.sleep(.1)
 
 
-action_num = 2
+action_num = 256
 observation_num = 8
 distance_riq = 0
 RL = DeepQNetwork(n_actions=action_num,
