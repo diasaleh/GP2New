@@ -283,11 +283,8 @@ for i in range(20):
         joint_angles.append(model.predict(np.array([[m, 0]]))[0])
 
     clear_output(wait=True)
-<<<<<<< HEAD
+
    # fig = plt.plot(T, joint_angles)
-=======
-    #fig = plt.plot(T, joint_angles)
->>>>>>> a3d9a2c211662308c090fffd1312c0adca0e8fa2
     #plt.show()
 
 def tilt(x,y):
