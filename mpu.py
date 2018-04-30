@@ -90,9 +90,10 @@ def getMotion():
     # print "beschleunigung_yout: ", ("%6d" % beschleunigung_yout), " skaliert: ", beschleunigung_yout_skaliert
     # print "beschleunigung_zout: ", ("%6d" % beschleunigung_zout), " skaliert: ", beschleunigung_zout_skaliert
  
-    # print "X Rotation: " , get_x_rotation(beschleunigung_xout_skaliert, beschleunigung_yout_skaliert, beschleunigung_zout_skaliert)
-    # print "Y Rotation: " , get_y_rotation(beschleunigung_xout_skaliert, beschleunigung_yout_skaliert, beschleunigung_zout_skaliert)
-    return beschleunigung_xout,beschleunigung_yout,beschleunigung_zout,gyroskop_xout,gyroskop_yout,gyroskop_zout
+    x_rot =  get_x_rotation(beschleunigung_xout_skaliert, beschleunigung_yout_skaliert, beschleunigung_zout_skaliert)
+    y_rot =  get_y_rotation(beschleunigung_xout_skaliert, beschleunigung_yout_skaliert, beschleunigung_zout_skaliert)
+    
+    return beschleunigung_xout,beschleunigung_yout,beschleunigung_zout,gyroskop_xout,gyroskop_yout,gyroskop_zout,x_rot,y_rot
 GPIO.setmode(GPIO.BCM)
 
 GPIO_TRIGGER = 18
@@ -182,7 +183,7 @@ last_s = s.copy()
 servo(s)
 sleep(1)
 
-for z in range(100):
+for z in range(500):
     print("hi")
     rd = np.random.randn(8) * 0.3
     rd[[1,3,5,7]] = 0
@@ -194,9 +195,9 @@ for z in range(100):
     last_s = test_angles.copy()
     sleep(.5)
 
-    sense_sum = np.zeros(3)
+    sense_sum = np.zeros(8)
     for i  in range(10):
-        sense_sum += np.array(getMotion())[:3]
+        sense_sum += np.array(getMotion())
         sleep(.05)
 
     sense = sense_sum/10.0
@@ -209,6 +210,9 @@ for z in range(100):
     #fig = plt.plot(a[:,0], c = 'r')
     #fig = plt.plot(a[:,1], c = 'b')
     #plt.show()
+
+    np.savetxt('angles.txt', angles)
+    np.savetxt('senses.txt', senses)
 
 axis = 0
 u = np.mean(senses, axis = 0)
@@ -278,7 +282,14 @@ T = np.linspace(0, np.pi*2.0 , 20)
 for i in range(30):
     print(str(i))
     for t in T:
-        joint_angles = model.predict(np.array([[t, t]]))[0]
+        joint_angles = model.predict(np.array([[-t, 0]]))[0]
+        servo(joint_angles)
+        sleep(.1)
+
+for i in range(30):
+    print(str(i))
+    for t in T:
+        joint_angles = model.predict(np.array([[0, t]]))[0]
         servo(joint_angles)
         sleep(.1)
 
@@ -287,14 +298,7 @@ for i in range(30):
     for t in T:
         joint_angles = model.predict(np.array([[t, 0]]))[0]
         servo(joint_angles)
-        sleep(.1)
-
-for i in range(30):
-    print(str(i))
-    for t in T:
-        joint_angles = model.predict(np.array([[10, 0]]))[0]
-        servo(joint_angles)
-        sleep(.1)
+        sleep(.01)
 
 for i in range(30):
     print(str(i))
