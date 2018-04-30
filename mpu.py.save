@@ -18,19 +18,6 @@ import smbus
 import math
 bus = smbus.SMBus(1) # bus = smbus.SMBus(0) fuer Revision 1
 address = 0x68       # via i2cdetect
-def scaling(x):
-	OldMax = 1
-	OldMin = -1
-	NewMax = 600
-	NewMin = 150
-	OldValue = x
-	OldRange = (OldMax - OldMin)
-	if (OldRange == 0):
-	    NewValue = NewMin
-	else:
-	    NewRange = (NewMax - NewMin)  
-	    NewValue = (((OldValue - OldMin) * NewRange) / OldRange) + NewMin
-	return (NewValue)
  
 # Register
 power_mgmt_1 = 0x6b
@@ -151,12 +138,46 @@ pwm.set_pwm_freq(60)
 
 print('Moving servo on channel 0, press Ctrl-C to quit...')
 
-def servo(action):
-    action = list(map(scaling,action))
-    print (action)
 
+def servo(action):
+    servo = [0]*8
+    if action[0] == 0:
+        servo[0] = servo_max
+    else:
+        servo[0] = servo_mid
+    if action[1] == 0:
+        servo[1] = servo_max
+    else:
+        servo[1] = servo_mid
+    if action[2] == 0:
+        servo[2] = servo_max
+    else:
+        servo[2] = servo_mid
+    if action[3] == 0:
+        servo[3] = servo_max
+    else:
+        servo[3] = servo_mid
+    if action[4] == 0:
+        servo[4] = servo_max
+    else:
+        servo[4] = servo_mid
+    if action[5] == 0:
+        servo[5] = servo_max
+    else:
+        servo[5] = servo_mid
+    if action[6] == 0:
+        servo[6] = servo_max
+    else:
+        servo[6] = servo_mid
+    if action[7] == 0:
+        servo[7] = servo_min
+    else:
+        servo[7] = servo_mid
+    # Iterate through the                                                                                                                                      positions sequence 3 times.
+    
+    
     for i in range(8):
-        pwm.set_pwm(i, 0,int( action[i]))
+        pwm.set_pwm(i, 0, servo[i])
 
 
 action_num = 256
@@ -177,13 +198,12 @@ def clear_output(wait):
     
 angles = []
 senses = []
-s = np.array([1,0,1,0,1,0,1,0], dtype=np.float64)
+s = np.array([-1,0,1,0,1,0,-1,0], dtype=np.float64)
 last_s = s.copy()
 servo(s)
 sleep(1)
 
 for z in range(100):
-    print("hi")
     rd = np.random.randn(8) * 0.3
     rd[[1,3,5,7]] = 0
     test_angles = np.clip(s+rd, -1,1)
@@ -262,9 +282,8 @@ for i in range(20):
     for m in T:
         joint_angles.append(model.predict(np.array([[m, 0]]))[0])
 
-    clear_output(wait=True)
-
-   # fig = plt.plot(T, joint_angles)
+    clear_output(wait=Tru
+    #fig = plt.plot(T, joint_angles)
     #plt.show()
 
 def tilt(x,y):
@@ -274,41 +293,10 @@ def tilt(x,y):
 
 T = np.linspace(0, np.pi*2.0 , 20)
 
-
-for i in range(100)
-print(i)
-    for t in T:
-        joint_angles = model.predict(np.array([[t, t]]))[0]
-        servo(joint_angles)
-        sleep(.1)
-
-for i in range(100)
-print(i)
-    for t in T:
-        joint_angles = model.predict(np.array([[t, 0]]))[0]
-        servo(joint_angles)
-        sleep(.1)
-
-for i in range(100)
-print(i)
-    for t in T:
-        joint_angles = model.predict(np.array([[10, 0]]))[0]
-        servo(joint_angles)
-        sleep(.1)
-
-for i in range(100)
-print(i)
-    for t in T:
-        joint_angles = model.predict(np.array([[0, 10]]))[0]
-        servo(joint_angles)
-        sleep(.1)
-
-for i in range(100)
-print(i)
-    for t in T:
-        joint_angles = model.predict(np.array([[100, 0s]]))[0]
-        servo(joint_angles)
-        sleep(.1)
+for t in T:
+    joint_angles = model.predict(np.array([[np.sin(t)*2.5, np.cos(t)*2.5]]))[0]
+    servo(joint_angles)
+    sleep(.1)
 
 
 joint_angles = model.predict(np.array([[0, 0]]))[0]
