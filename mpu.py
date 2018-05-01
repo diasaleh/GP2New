@@ -154,7 +154,7 @@ print('Moving servo on channel 0, press Ctrl-C to quit...')
 
 def servo(action):
     action = list(map(scaling,action))
-    print (action)
+    #print (action)
 
     for i in range(8):
         pwm.set_pwm(i, 0,int( action[i]))
@@ -246,7 +246,7 @@ for desired_h in T:
 
 #multi input
 model = Sequential()
-model.add(Dense(64, input_dim=2)) #two for xy
+model.add(Dense(64, input_dim=8)) #two for xy
 model.add(Activation('tanh'))
 model.add(Dense(128, activation='tanh'))
 model.add(Dropout(0.20))
@@ -263,7 +263,7 @@ axis_vis = senses_norm[:,0]
 T = np.linspace(np.min(axis_vis), np.max(axis_vis), 30)
 
 for i in range(20):
-    model.fit(senses_norm[:,:2], np.array(angles), verbose=False, epochs=10)
+    model.fit(senses_norm[:,:], np.array(angles), verbose=False, epochs=20)
 
     joint_angles = []
     for m in T:
@@ -289,11 +289,13 @@ for i in range(30):
         sense_n += np.array(getMotion())
         sleep(.05)
     #sense_n = sense_n/10.0
+    print(sense_n)
     u = np.mean(sense_n)
     std = np.std(sense_n)
     sense_no = (sense_n - u)/std
+    print(sense_no)
     for t in T:
-        joint_angles = model.predict(np.array([[-sense_no[0], -sense_no[1]]]))[0]
+        joint_angles = model.predict(np.array([[-sense_no, -sense_no]]))[0]
         servo(joint_angles)
         sleep(.01)
 
@@ -305,7 +307,7 @@ for i in range(30):
     	for i  in range(10):
         	sense_n += np.array(getMotion()) 
         	sleep(.05)
-    	sense_n = sense_n/10.0
+    	#sense_n = sense_n/10.0
     	u = np.mean(sense_n)
     	std = np.std(sense_n)
     	sense_no = (sense_n - u)/std
