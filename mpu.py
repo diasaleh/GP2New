@@ -19,18 +19,18 @@ import math
 bus = smbus.SMBus(1) # bus = smbus.SMBus(0) fuer Revision 1
 address = 0x68       # via i2cdetect
 def scaling(x):
-	OldMax = 1
-	OldMin = -1
-	NewMax = 600
-	NewMin = 150
-	OldValue = x
-	OldRange = (OldMax - OldMin)
-	if (OldRange == 0):
-	    NewValue = NewMin
-	else:
-	    NewRange = (NewMax - NewMin)  
-	    NewValue = (((OldValue - OldMin) * NewRange) / OldRange) + NewMin
-	return (NewValue)
+    OldMax = 1
+    OldMin = -1
+    NewMax = 600
+    NewMin = 150
+    OldValue = x
+    OldRange = (OldMax - OldMin)
+    if (OldRange == 0):
+        NewValue = NewMin
+    else:
+        NewRange = (NewMax - NewMin)  
+        NewValue = (((OldValue - OldMin) * NewRange) / OldRange) + NewMin
+    return (NewValue)
  
 # Register
 power_mgmt_1 = 0x6b
@@ -154,7 +154,7 @@ print('Moving servo on channel 0, press Ctrl-C to quit...')
 
 def servo(action):
     action = list(map(scaling,action))
-    #print (action)
+    print (action)
 
     for i in range(8):
         pwm.set_pwm(i, 0,int( action[i]))
@@ -185,12 +185,20 @@ sleep(1)
 
 for z in range(0):
     print("hi")
-    rd = np.random.randn(8) * 0.3
-    rd[[1,3,5,7]] = 0
-    test_angles = np.clip(s+rd, -1,1)
+    sense_sum = np.zeros(8)
+    for i  in range(10):
+        sense_sum += np.array(getMotion())
+        sleep(.05)
 
-    for i in np.linspace(0,1,10):
-        servo((1-i) * last_s + i * test_angles)
+    sense = sense_sum/10.0
+    print(sense)
+
+    test_angles = [0]*8
+    for i in range(8):
+        test_angles[i] = np.random.randint(-1,2)
+    test_angles[[1,3,5,7]] = 0
+    
+    servo(test_angles)
 
     last_s = test_angles.copy()
     sleep(.5)
@@ -201,6 +209,7 @@ for z in range(0):
         sleep(.05)
 
     sense = sense_sum/10.0
+    print(sense)
 
     angles.append(test_angles.copy())
     senses.append(sense)
@@ -246,10 +255,8 @@ for desired_h in T:
 
 #multi input
 model = Sequential()
-model.add(Dense(64, input_dim=8)) #two for xy
+model.add(Dense(64, input_dim=2)) #two for xy
 model.add(Activation('tanh'))
-model.add(Dense(128, activation='tanh'))
-model.add(Dropout(0.20))
 model.add(Dense(8))
 model.add(Activation('tanh'))
 
@@ -262,15 +269,15 @@ axis_vis = senses_norm[:,0]
 
 T = np.linspace(np.min(axis_vis), np.max(axis_vis), 30)
 
-for i in range(40):
-    model.fit(senses_norm[:,:], np.array(angles), verbose=False, epochs=10)
-'''
+for i in range(30):
+    model.fit(senses_norm[:,:2], np.array(angles), verbose=False, epochs=10)
+
     joint_angles = []
     for m in T:
         joint_angles.append(model.predict(np.array([[m, 0]]))[0])
 
     clear_output(wait=True)
-'''
+
    # fig = plt.plot(T, joint_angles)
     #plt.show()
 
@@ -281,63 +288,34 @@ def tilt(x,y):
 
 T = np.linspace(0, np.pi*2.0 , 20)
 
-for i in range(30):
-    print(str(1))
-    print(str(i))
-    sense_n = np.zeros(8)
-    for i  in range(10):
-        sense_n += np.array(getMotion())
-        sleep(.05)
-    #sense_n = sense_n/10.0
-    print(sense_n)
-    u = np.mean(sense_n)
-    std = np.std(sense_n)
-    sense_no = (sense_n - u)/std
-    print(sense_no[0])
-    for t in T:
-        joint_angles = model.predict(np.array([[-sense_no[0], -sense_no[0]]]))[0]
-        servo(joint_angles)
-        sleep(.01)
-
-for i in range(30):
-    print(str(2))
-    print(str(i))
-    for t in T:
-    	sense_n = np.zeros(8)
-    	for i  in range(10):
-        	sense_n += np.array(getMotion()) 
-        	sleep(.05)
-    	#sense_n = sense_n/10.0
-    	u = np.mean(sense_n)
-    	std = np.std(sense_n)
-    	sense_no = (sense_n - u)/std
-        joint_angles = model.predict(np.array([[-sense_no[0], -sense_no[1]]]))[0]
-        servo(joint_angles)
-        sleep(.01)
 
 for i in range(30):
     print(str(i))
-    sense_n = np.zeros(8)
-    for i  in range(10):
-        sense_n += np.array(getMotion())
-        sleep(.05)
-    sense_n = sense_n/10.0
     for t in T:
-        joint_angles = model.predict(np.array([[sense_n[0], sense_n[1]]]))[0]
+        joint_angles = model.predict(np.array([[-t, 0]]))[0]
         servo(joint_angles)
         sleep(.01)
 
 for i in range(30):
     print(str(i))
     for t in T:
-	sense_n = np.zeros(8)
-    	for i  in range(10):
-        	sense_n += np.array(getMotion())
-        	sleep(.05)
-	sense_n = sense_n/10.0
-        joint_angles = model.predict(np.array([[sense_n[0], sense_n[1]]]))[0]
+        joint_angles = model.predict(np.array([[0, t]]))[0]
         servo(joint_angles)
         sleep(.01)
+
+for i in range(30):
+    print(str(i))
+    for t in T:
+        joint_angles = model.predict(np.array([[t, 0]]))[0]
+        servo(joint_angles)
+        sleep(.01)
+
+for i in range(30):
+    print(str(i))
+    for t in T:
+        joint_angles = model.predict(np.array([[0, 10]]))[0]
+        servo(joint_angles)
+        sleep(.1)
 
 for i in range(30):
     print(str(i))
@@ -349,6 +327,3 @@ for i in range(30):
 
 joint_angles = model.predict(np.array([[0, 0]]))[0]
 servo(joint_angles)
-
-
-
