@@ -248,6 +248,8 @@ for desired_h in T:
 model = Sequential()
 model.add(Dense(64, input_dim=2)) #two for xy
 model.add(Activation('tanh'))
+model.add(Dense(128, activation='tanh'))
+model.add(Dropout(0.20))
 model.add(Dense(8))
 model.add(Activation('tanh'))
 
