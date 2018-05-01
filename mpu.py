@@ -183,7 +183,7 @@ last_s = s.copy()
 servo(s)
 sleep(1)
 
-for z in range(0):
+for z in range(100):
     print("hi")
     sense_sum = np.zeros(8)
     for i  in range(10):
@@ -220,10 +220,10 @@ for z in range(0):
     #fig = plt.plot(a[:,1], c = 'b')
     #plt.show()
 
-    np.savetxt('angles.txt', angles)
-    np.savetxt('senses.txt', senses)
-angles = np.loadtxt('angles.txt')
-senses = np.loadtxt('senses.txt')
+    np.savetxt('anglesForward.txt', angles)
+    np.savetxt('sensesForward.txt', senses)
+#angles = np.loadtxt('angles.txt')
+#senses = np.loadtxt('senses.txt')
 axis = 0
 u = np.mean(senses, axis = 0)
 std = np.std(senses, axis = 0)
