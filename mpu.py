@@ -279,34 +279,49 @@ def tilt(x,y):
 
 T = np.linspace(0, np.pi*2.0 , 20)
 
-
 for i in range(30):
     print(str(i))
+    sense_n = np.zeros(8)
+    for i  in range(10):
+        sense_n += np.array(getMotion())
+        sleep(.05)
     for t in T:
-        joint_angles = model.predict(np.array([[-t, 0]]))[0]
+        joint_angles = model.predict(np.array([[-sense_n[0], -sense_n[1]]]))[0]
         servo(joint_angles)
         sleep(.01)
 
 for i in range(30):
     print(str(i))
     for t in T:
-        joint_angles = model.predict(np.array([[0, t]]))[0]
+    	sense_n = np.zeros(8)
+    	for i  in range(10):
+        	sense_n += np.array(getMotion())
+        	sleep(.05)
+        joint_angles = model.predict(np.array([[-sense_n[0], -sense_n[1]]]))[0]
+        servo(joint_angles)
+        sleep(.01)
+
+for i in range(30):
+    print(str(i))
+    sense_n = np.zeros(8)
+    for i  in range(10):
+        sense_n += np.array(getMotion())
+        sleep(.05)
+    for t in T:
+        joint_angles = model.predict(np.array([[sense_n[0], sense_n[1]]]))[0]
         servo(joint_angles)
         sleep(.01)
 
 for i in range(30):
     print(str(i))
     for t in T:
-        joint_angles = model.predict(np.array([[t, 0]]))[0]
+	sense_n = np.zeros(8)
+    	for i  in range(10):
+        	sense_n += np.array(getMotion())
+        	sleep(.05)
+        joint_angles = model.predict(np.array([[sense_n[0], sense_n[1]]]))[0]
         servo(joint_angles)
         sleep(.01)
-
-for i in range(30):
-    print(str(i))
-    for t in T:
-        joint_angles = model.predict(np.array([[0, 10]]))[0]
-        servo(joint_angles)
-        sleep(.1)
 
 for i in range(30):
     print(str(i))
