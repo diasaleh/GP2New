@@ -261,7 +261,7 @@ axis_vis = senses_norm[:,0]
 T = np.linspace(np.min(axis_vis), np.max(axis_vis), 30)
 
 for i in range(20):
-    model.fit(senses_norm[:,6:8], np.array(angles), verbose=False, epochs=10)
+    model.fit(senses_norm[:,:2], np.array(angles), verbose=False, epochs=10)
 
     joint_angles = []
     for m in T:
@@ -280,24 +280,34 @@ def tilt(x,y):
 T = np.linspace(0, np.pi*2.0 , 20)
 
 for i in range(30):
+    print(str(1))
     print(str(i))
     sense_n = np.zeros(8)
     for i  in range(10):
         sense_n += np.array(getMotion())
         sleep(.05)
+    #sense_n = sense_n/10.0
+    u = np.mean(sense_n)
+    std = np.std(sense_n)
+    sense_no = (sense_n - u)/std
     for t in T:
-        joint_angles = model.predict(np.array([[-sense_n[0], -sense_n[1]]]))[0]
+        joint_angles = model.predict(np.array([[-sense_no[0], -sense_no[1]]]))[0]
         servo(joint_angles)
         sleep(.01)
 
 for i in range(30):
+    print(str(2))
     print(str(i))
     for t in T:
     	sense_n = np.zeros(8)
     	for i  in range(10):
-        	sense_n += np.array(getMotion())
+        	sense_n += np.array(getMotion()) 
         	sleep(.05)
-        joint_angles = model.predict(np.array([[-sense_n[0], -sense_n[1]]]))[0]
+    	sense_n = sense_n/10.0
+    	u = np.mean(sense_n)
+    	std = np.std(sense_n)
+    	sense_no = (sense_n - u)/std
+        joint_angles = model.predict(np.array([[-sense_no[0], -sense_no[1]]]))[0]
         servo(joint_angles)
         sleep(.01)
 
@@ -307,6 +317,7 @@ for i in range(30):
     for i  in range(10):
         sense_n += np.array(getMotion())
         sleep(.05)
+    sense_n = sense_n/10.0
     for t in T:
         joint_angles = model.predict(np.array([[sense_n[0], sense_n[1]]]))[0]
         servo(joint_angles)
@@ -319,6 +330,7 @@ for i in range(30):
     	for i  in range(10):
         	sense_n += np.array(getMotion())
         	sleep(.05)
+	sense_n = sense_n/10.0
         joint_angles = model.predict(np.array([[sense_n[0], sense_n[1]]]))[0]
         servo(joint_angles)
         sleep(.01)
