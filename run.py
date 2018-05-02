@@ -120,8 +120,8 @@ def distance():
 pwm = Adafruit_PCA9685.PCA9685()
 
 servo_min = 150  # Min pulse length out of 4096
-servo_max = 500  # Max pulse length out of 4096
-servo_mid = 400
+servo_max = 550  # Max pulse length out of 4096
+servo_mid = 450
 # Helper function to make setting a servo pulse width simpler.
 def set_servo_pulse(channel, pulse):
     pulse_length = 1000000    # 1,000,000 us per second
@@ -252,19 +252,21 @@ def convert(action):
 
   #drive(actionDrive)
 
-for i_episode in range(30):
-
+for i_episode in range(10):
+    print(str(i_episode))
     observation = [0,0,0,0,0,0,0,0]
     ep_r = 0
     for _ in range(4):
-        #predistance = distance()
+        predistance = distance()
+	print("pre destance = " +str(predistance))
         action = RL.choose_action(observation)
-        preacc = getMotion()
+        #preacc = getMotion()
         actionDrive = convert(action)
-	curacc = getMotion()
-        #curdistance = distance()
-        #divdistance = curdistance - predistance
-	difacc = curacc-preacc
+	#curacc = getMotion()
+        curdistance = distance()
+	print("destance = " +str( curdistance))
+        divdistance = curdistance - predistance
+	#difacc = curacc-preacc
 
         print (action)
         print(actionDrive)
@@ -272,10 +274,10 @@ for i_episode in range(30):
         
 
         # the smaller theta and closer to center the better
-        if difacc > difreq:
-          reward = difacc
+        if divdistance > distance_riq:
+          reward = divdistance
         else:
-          reward = -difacc
+          reward = -divdistance
 
         RL.store_transition(observation, action, reward, observation_)
 
