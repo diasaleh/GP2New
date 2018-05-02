@@ -93,8 +93,8 @@ def getMotion():
     x_rot =  get_x_rotation(beschleunigung_xout_skaliert, beschleunigung_yout_skaliert, beschleunigung_zout_skaliert)
     y_rot =  get_y_rotation(beschleunigung_xout_skaliert, beschleunigung_yout_skaliert, beschleunigung_zout_skaliert)
     
-    return x_rot,y_rot
-    #return beschleunigung_xout,beschleunigung_yout,beschleunigung_zout,gyroskop_xout,gyroskop_yout,gyroskop_zout,x_rot$
+    #return x_rot,y_rot
+    return beschleunigung_xout,beschleunigung_yout,beschleunigung_zout,gyroskop_xout,gyroskop_yout,gyroskop_zout,x_rot,y_rot
 # return beschleunigung_xout,beschleunigung_yout,beschleunigung_zout,gyroskop_xout,gyroskop_yout,gyroskop_zout,x_rot,y_rot
 GPIO.setmode(GPIO.BCM)
 
@@ -184,46 +184,35 @@ last_s = s.copy()
 servo(s)
 sleep(1)
 
-for z in range(0):
-    print("hi")
-    #sense_sum = np.zeros(8)
-    #for i  in range(10):
-    #    sense_sum += np.array(getMotion())
-    #    sleep(.05)
+for z in range(100):
+    #rd = np.random.randn(8) * 0.3
+    #rd[[1,3,5,7]] = 0
+    #test_angles = np.clip(s+rd, -1,1)
 
-    #sense_a = sense_sum/10.0
-    
+    #for i in np.linspace(0,1,10):
+    #    servo((1-i) * last_s + i * test_angles)
 
-    test_angles = np.zeros(8)
-    rd = np.random.randn(8) * 0.3
-    test_angles = np.clip(s+rd, -1,1)
-    test_angles[[1,3,5,7]] = np.random.choice([-.25,0,.25],4)
-    test_angles[1] = -test_angles[1]
-    test_angles[7] = -test_angles[7]
-    servo(test_angles)
+    #last_s = test_angles.copy()
+    #sleep(.5)
 
-    last_s = test_angles.copy()
-    sleep(.5)
-
-    sense_sum = np.zeros(2)
+    sense_sum = np.zeros(8)
     for i  in range(10):
         sense_sum += np.array(getMotion())
         sleep(.05)
 
-    sense_b = sense_sum/10.0
-    #print(sense_b[0] - sense_a[0])
-    sense = sense_b
-    angles.append(test_angles.copy())
-    senses.append(sense)
+    sense = sense_sum/10.0
 
+    #angles.append(test_angles.copy())
+    senses.append(sense)
+    print(sense)
     clear_output(wait=True)
     a = np.array(senses)
     #fig = plt.plot(a[:,0], c = 'r')
     #fig = plt.plot(a[:,1], c = 'b')
     #plt.show()
 
-    np.savetxt('anglesTestRot.txt', angles)
-    np.savetxt('sensesTestRot.txt', senses)
+    #np.savetxt('anglesTestRot.txt', angles)
+    np.savetxt('sensesTestsense.txt', senses)
 #angles = np.loadtxt('anglesForwardAll.txt')
 #senses = np.loadtxt('sensesForwardAll.txt')
 axis = 0
@@ -294,7 +283,7 @@ T = np.linspace(0, np.pi*2.0 , 20)
 for i in range(30):
     print(str(i))
     for t in T:
-	sense_n = np.zeros(2)
+	sense_n = np.zeros(8)
     	for i  in range(10):
         	sense_n += np.array(getMotion())
         	sleep(.05)
