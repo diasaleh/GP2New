@@ -184,7 +184,7 @@ last_s = s.copy()
 servo(s)
 sleep(1)
 
-for z in range(100):
+for z in range(30):
     #rd = np.random.randn(8) * 0.3
     #rd[[1,3,5,7]] = 0
     #test_angles = np.clip(s+rd, -1,1)
