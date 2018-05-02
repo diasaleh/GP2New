@@ -251,33 +251,54 @@ def convert(action):
     return actionDrive
 
   #drive(actionDrive)
+for _ in range(10):
+    for i  in range(10):
+        sense_sum += getMotion()
+        sleep(.05)
+    sense = sense_sum/10.0
+    senses.append(sense)
+
+max_stable = np.max(senses)
 
 for i_episode in range(10):
     print(str(i_episode))
-    observation = [0,0,0,0,0,0,0,0]
+    observation = np.array([0,0,0,0,0,0,0,0])
+    convert(observation)
     ep_r = 0
-    for _ in range(4):
-        predistance = distance()
-	print("pre destance = " +str(predistance))
-        action = RL.choose_action(observation)
-        #preacc = getMotion()
-        actionDrive = convert(action)
-	#curacc = getMotion()
-        curdistance = distance()
-	print("destance = " +str( curdistance))
-        divdistance = curdistance - predistance
-	#difacc = curacc-preacc
 
-        print (action)
-        print(actionDrive)
+    action = RL.choose_action(observation)
+
+    for _ in range(4):
+     #    #predistance = distance()
+	    # print("pre destance = " +str(predistance))
+     #    preacc = getMotion()
+	    # curacc = getMotion()
+     #    curdistance = distance()
+	    # print("destance = " +str( curdistance))
+     #    #divdistance = curdistance - predistance
+	    # #difacc = curacc-preacc
+
+        actionDrive = convert(action)
+
+        for i  in range(10):
+            sense_sum += getMotion()
+            sleep(.05)
+        sense = sense_sum/10.0
+
         observation_ = actionDrive
         
+        r = sense - max_stable
 
         # the smaller theta and closer to center the better
-        if divdistance > distance_riq:
-          reward = divdistance
+        if r > 0:
+          reward = r
         else:
-          reward = -divdistance
+          reward = -r
+
+        if r > 300:
+            RL.store_transition(observation, action, reward, observation_)
+            RL.store_transition(observation, action, reward, observation_)
+            RL.store_transition(observation, action, reward, observation_)
 
         RL.store_transition(observation, action, reward, observation_)
 
