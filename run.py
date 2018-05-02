@@ -88,6 +88,8 @@ GPIO_ECHO = 24
 #set GPIO direction (IN / OUT)
 GPIO.setup(GPIO_TRIGGER, GPIO.OUT)
 GPIO.setup(GPIO_ECHO, GPIO.IN)
+def sleep(x):
+    time.sleep(x)
  
 def distance():
     # set Trigger to HIGH
@@ -178,7 +180,7 @@ def drive(action):
     
     for i in range(8):
         pwm.set_pwm(i, 0, servo[i])
-    time.sleep(.5)
+    sleep(.5)
 
 
 action_num = 256
@@ -249,9 +251,10 @@ def convert(action):
 ##    actionDrive = [1,1,1,1]
 ##    drive(actionDrive)
     return actionDrive
-
+senses = []
   #drive(actionDrive)
 for _ in range(10):
+    sense_sum=0
     for i  in range(10):
         sense_sum += getMotion()
         sleep(.05)
@@ -263,7 +266,7 @@ max_stable = np.max(senses)
 for i_episode in range(10):
     print(str(i_episode))
     observation = np.array([0,0,0,0,0,0,0,0])
-    convert(observation)
+    #convert(observation)
     ep_r = 0
 
     action = RL.choose_action(observation)
@@ -279,7 +282,7 @@ for i_episode in range(10):
 	    # #difacc = curacc-preacc
 
         actionDrive = convert(action)
-
+	sense_sum=0
         for i  in range(10):
             sense_sum += getMotion()
             sleep(.05)

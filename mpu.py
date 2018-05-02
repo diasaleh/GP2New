@@ -155,11 +155,11 @@ pwm.set_pwm_freq(60)
 print('Moving servo on channel 0, press Ctrl-C to quit...')
 
 def servo(action):
-    #print (action)
+    print (action)
     action = list(map(scaling,action))
     for i in range(8):
         pwm.set_pwm(i, 0,int( action[i]))
-
+    sleep(.5)
 
 action_num = 256
 observation_num = 8
@@ -183,8 +183,10 @@ s = np.array([1,0,1,0,1,0,1,0], dtype=np.float64)
 last_s = s.copy()
 servo(s)
 sleep(1)
-
-for z in range(30):
+for o in range(30):
+	print "hy"
+	servo([0,0,0,0,0,0,0,0])
+for z in range(0):
     #rd = np.random.randn(8) * 0.3
     #rd[[1,3,5,7]] = 0
     #test_angles = np.clip(s+rd, -1,1)
