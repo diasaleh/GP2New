@@ -1,11 +1,12 @@
 import numpy as np
 # from matplotlib import pyplot as plt
-import keras
-from keras.models import Sequential
-from keras.layers import Dense, Activation, Dropout, Flatten, MaxPooling2D, Conv2D
-from keras import backend as K
+#import keras
+#from keras.models import Sequential
+#from keras.layers import Dense, Activation, Dropout, Flatten, MaxPooling2D, Conv2D
+#from keras import backend as K
 import RPi.GPIO as GPIO
 import time
+import collections
 
 import random
 from RL_brain import DeepQNetwork
@@ -174,6 +175,7 @@ senses = []
 s = np.array([1,0,1,0], dtype=np.float64)
 last_s = s.copy()
 sleep(1)
+a=[]
 for o in range(5):
 	print "hy"
 	servo([0,0,0,0])
@@ -195,22 +197,25 @@ for z in range(100):
     cur_distance = distance()
     #last_s = test_angles.copy()
     div_distance = cur_distance - pre_distance
-    
-    if div_distance > max_dis:
-        max_dis = div_distance
-        action1_max = test_angles
-        action2_max = test_angles2
+    a.append([div_distance,test_angles,test_angles2])
+    # if div_distance > max_dis:
+    #     max_dis = div_distance
+    #     action1_max = test_angles
+    #     action2_max = test_angles2
 
     sleep(.5)
     print(cur_distance)
     servo([0,0,0,0])   
 
-    np.savetxt('newangles_m.txt', angles)
-    np.savetxt('newsenses_m.txt', senses)
-for p in range(100):
-    servo(action1_max)
-    servo(action2_max)
-    sleep(.2)
+    #np.savetxt('newangles_m.txt', angles)
+    #np.savetxt('newsenses_m.txt', senses)
+a = sorted(a, key=itemgetter(0),reverse=True)
+for pp in range(5):
+    for p in range(50):
+        servo(a[pp][1])
+        servo(a[pp][2])
+        sleep(.2)
+
 #angles = np.loadtxt('newangles.txt')
 #senses = np.loadtxt('newsenses.txt')
 
