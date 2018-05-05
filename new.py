@@ -6,8 +6,11 @@ import numpy as np
 #from keras import backend as K
 import RPi.GPIO as GPIO
 import time
-import collections
+import operator
+import pickle
 
+import collections
+from operator import itemgetter
 import random
 from RL_brain import DeepQNetwork
 
@@ -180,7 +183,7 @@ for o in range(5):
 	print "hy"
 	servo([0,0,0,0])
 max_dis = 0
-for z in range(100):
+for z in range(20):
     #rd = np.random.randn(8) * 0.3
     #rd[[1,3,5,7]] = 0
     #test_angles = np.clip(s+rd, -1,1)
@@ -210,6 +213,10 @@ for z in range(100):
     #np.savetxt('newangles_m.txt', angles)
     #np.savetxt('newsenses_m.txt', senses)
 a = sorted(a, key=itemgetter(0),reverse=True)
+with open('outfile', 'wb') as fp:
+    pickle.dump(a, fp)
+# with open ('outfile', 'rb') as fp:
+#     itemlist = pickle.load(fp)
 for pp in range(5):
     for p in range(50):
         servo(a[pp][1])
