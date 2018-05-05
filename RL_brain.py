@@ -126,7 +126,7 @@ class DeepQNetwork:
 
         if np.random.uniform() < self.epsilon:
             # forward feed the observation and get q value for every actions
-            actions_value = self.sess.run(self.q_eval, feed_dict={self.s: np.array(observation).reshape(1, 8)})
+            actions_value = self.sess.run(self.q_eval, feed_dict={self.s: np.array(observation).reshape(1, self.n_features)})
             action = np.argmax(actions_value)
             print (action )
         
@@ -141,7 +141,7 @@ class DeepQNetwork:
 
         if np.random.uniform() < self.epsilon:
             # forward feed the observation and get q value for every actions
-            actions_value = self.sess.run(self.q_eval, feed_dict={self.s: np.array(observation).reshape(1, 8)})
+            actions_value = self.sess.run(self.q_eval, feed_dict={self.s: np.array(observation).reshape(1, self.n_features)})
             action = np.argmax(actions_value)
             print (action )
         
@@ -154,7 +154,7 @@ class DeepQNetwork:
     def forward_action(self, observation):
         # to have batch dimension when feed into tf placeholde
             # forward feed the observation and get q value for every action
-        actions_value = self.sess.run(self.q_eval, feed_dict={self.s: np.array(observation).reshape(1, 8)})
+        actions_value = self.sess.run(self.q_eval, feed_dict={self.s: np.array(observation).reshape(1, self.n_features)})
         action = np.argmax(actions_value)
         print (action )
         

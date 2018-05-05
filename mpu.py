@@ -62,7 +62,7 @@ def get_y_rotation(x,y,z):
 def get_x_rotation(x,y,z):
     radians = math.atan2(y, dist(x,z))
     return math.degrees(radians)
-def getMotion():
+def ggetMotion():
     bus.write_byte_data(address, power_mgmt_1, 0)
  
     # print "Gyroskop"
@@ -157,7 +157,7 @@ print('Moving servo on channel 0, press Ctrl-C to quit...')
 def servo(action):
     print (action)
     action = list(map(scaling,action))
-    for i in range(8):
+    for i in range(4):
         pwm.set_pwm(i, 0,int( action[i]))
     sleep(.5)
 
@@ -179,45 +179,49 @@ def clear_output(wait):
     
 angles = []
 senses = []
-s = np.array([1,0,1,0,1,0,1,0], dtype=np.float64)
+s = np.array([1,0,1,0], dtype=np.float64)
 last_s = s.copy()
-servo(s)
 sleep(1)
-for o in range(30):
+for o in range(5):
 	print "hy"
-	servo([0,0,0,0,0,0,0,0])
-for z in range(0):
+	servo([0,0,0,0])
+for z in range(100):
     #rd = np.random.randn(8) * 0.3
     #rd[[1,3,5,7]] = 0
     #test_angles = np.clip(s+rd, -1,1)
 
     #for i in np.linspace(0,1,10):
     #    servo((1-i) * last_s + i * test_angles)
-
+    test_angles = np.zeros(4)
+    test_angles = np.random.choice([-.5,-.25,0,.25,.5],4)
+    pre_distance = distance()
+    servo(test_angles)
+    cur_distance = distance()
     #last_s = test_angles.copy()
-    #sleep(.5)
+    div_distance = cur_distance - pre_distance
+    sleep(.5)
+    print(cur_distance)
+    sense = np.zeros(2)
+    #for i  in range(10):
+    #    sense_sum += np.array(getMotion())
+    #    sleep(.05)
+    sense[0] = div_distance
+    sense[1] = div_distance
+    #sense = sense_sum/10.0
 
-    sense_sum = np.zeros(8)
-    for i  in range(10):
-        sense_sum += np.array(getMotion())
-        sleep(.05)
-
-    sense = sense_sum/10.0
-
-    #angles.append(test_angles.copy())
+    angles.append(test_angles.copy())
     senses.append(sense)
-    print(sense)
-    clear_output(wait=True)
-    a = np.array(senses)
+    #print(sense)
+    #clear_output(wait=True)
+    #a = np.array(senses)
     #fig = plt.plot(a[:,0], c = 'r')
     #fig = plt.plot(a[:,1], c = 'b')
     #plt.show()
 
-    #np.savetxt('anglesTestRot.txt', angles)
-    np.savetxt('sensesTestsense.txt', senses)
-#angles = np.loadtxt('anglesForwardAll.txt')
-#senses = np.loadtxt('sensesForwardAll.txt')
-axis = 0
+    np.savetxt('newangles2bro.txt', angles)
+    np.savetxt('newsenses2bro.txt', senses)
+#angles = np.loadtxt('newangles.txt')
+#senses = np.loadtxt('newsenses.txt')
 u = np.mean(senses, axis = 0)
 std = np.std(senses, axis = 0)
 
@@ -226,31 +230,31 @@ senses_norm = (senses - u)/std
 single_axis = np.array(senses_norm)
 #fig = plt.plot(single_axis)
 
-def line_fit(single_axis, joint_states):
-    m, b = np.polyfit(single_axis, joint_states, 1)
+#def line_fit(single_axis, joint_states):
+#    m, b = np.polyfit(single_axis, joint_states, 1)
     
-    T = np.linspace(np.min(single_axis), np.max(single_axis))
+#    T = np.linspace(np.min(single_axis), np.max(single_axis))
 
     # fig = plt.scatter(single_axis, joint_states)
     # fig = plt.plot(T, [m*t + b for t in T])
 
-    return m, b
+#    return m, b
 
-line_fit(single_axis, np.array(angles)[:,2])
-coeff = [line_fit(single_axis, np.array(angles)[:,j]) for j in range(8)]
+#line_fit(single_axis, np.array(angles)[:,2])
+#coeff = [line_fit(single_axis, np.array(angles)[:,j]) for j in range(8)]
 
-T = np.linspace(np.min(single_axis)-2, np.max(single_axis)+2, 20)
+#T = np.linspace(np.min(single_axis)-2, np.max(single_axis)+2, 20)
 
-for desired_h in T:
-    js = np.array([c[0]*desired_h+c[1] for c in coeff])
-    servo(js)
-    sleep(.1)
+#for desired_h in T:
+#    js = np.array([c[0]*desired_h+c[1] for c in coeff])
+#    servo(js)
+#    sleep(.1)
 
 #multi input
 model = Sequential()
 model.add(Dense(64, input_dim=2)) #two for xy
 model.add(Activation('tanh'))
-model.add(Dense(8))
+model.add(Dense(4))
 model.add(Activation('tanh'))
 
 #for a mean squared error regression problem
@@ -274,27 +278,21 @@ for i in range(30):
    # fig = plt.plot(T, joint_angles)
     #plt.show()
 
-def tilt(x,y):
-    joint_angles = model.predict(mp.array([[x, y]]))[0]
-    servo(joint_angles)
-    sleep(.1)
+#def tilt(x,y):
+#    joint_angles = model.predict(mp.array([[x, y]]))[0]
+#    servo(joint_angles)
+#    sleep(.1)
 
 T = np.linspace(0, np.pi*2.0 , 20)
 
 
-for i in range(30):
+for i in range(300):
     print(str(i))
-    for t in T:
-	sense_n = np.zeros(8)
-    	for i  in range(10):
-        	sense_n += np.array(getMotion())
-        	sleep(.05)
-	sense_n = sense_n/10.0
-	print("hellooooooooooooooooooooo")
-        joint_angles = model.predict(np.array([[-sense_n[0], -sense_n[1]]]))[0]
-        servo(joint_angles)
-        sleep(.01)
-
+    joint_angles = model.predict(np.array([[T[0],T[0]]]))[0]
+    servo(joint_angles)
+    joint_angles = model.predict(np.array([[T[19],T[19]]]))[0]
+    servo(joint_angles)
+'''
 for i in range(30):
     print(str(i))
     for t in T:
@@ -328,3 +326,4 @@ for i in range(30):
 
 joint_angles = model.predict(np.array([[0, 0]]))[0]
 servo(joint_angles)
+'''

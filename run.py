@@ -1,15 +1,11 @@
-"""
-Deep Q network,
-Using:
-Tensorflow: 1.0
-gym: 0.7.3
-"""
+
+""" Deep Q network, Using: Tensorflow: 1.0 gym: 0.7.3 """
 import RPi.GPIO as GPIO
 import time
 
 import random
 from RL_brain import DeepQNetwork
-
+from mpu6050 import mpu6050
 import numpy as np
 import Adafruit_PCA9685
 
@@ -18,7 +14,7 @@ import smbus
 import math
 bus = smbus.SMBus(1) # bus = smbus.SMBus(0) fuer Revision 1
 address = 0x68       # via i2cdetect
- 
+sensor = mpu6050(0x68)
 # Register
 power_mgmt_1 = 0x6b
 power_mgmt_2 = 0x6c
@@ -49,21 +45,21 @@ def get_y_rotation(x,y,z):
 def get_x_rotation(x,y,z):
     radians = math.atan2(y, dist(x,z))
     return math.degrees(radians)
-def getMotion():
+def getMotion2():
 	bus.write_byte_data(address, power_mgmt_1, 0)
  
-	print "Gyroskop"
-	print "--------"
+	#print "Gyroskop"
+	#print "--------"
  
 	gyroskop_xout = read_word_2c(0x43)
 	gyroskop_yout = read_word_2c(0x45)
 	gyroskop_zout = read_word_2c(0x47)
  
-	print "gyroskop_xout: ", ("%5d" % gyroskop_xout), " skaliert: ", (gyroskop_xout / 131)
-	print "gyroskop_yout: ", ("%5d" % gyroskop_yout), " skaliert: ", (gyroskop_yout / 131)
-	print "gyroskop_zout: ", ("%5d" % gyroskop_zout), " skaliert: ", (gyroskop_zout / 131)
-	print "Beschleunigungssensor"
-	print "---------------------"
+	#print "gyroskop_xout: ", ("%5d" % gyroskop_xout), " skaliert: ", (gyroskop_xout / 131)
+	#print "gyroskop_yout: ", ("%5d" % gyroskop_yout), " skaliert: ", (gyroskop_yout / 131)
+	#print "gyroskop_zout: ", ("%5d" % gyroskop_zout), " skaliert: ", (gyroskop_zout / 131)
+	#print "Beschleunigungssensor"
+	#print "---------------------"
  
 	beschleunigung_xout = read_word_2c(0x3b)
 	beschleunigung_yout = read_word_2c(0x3d)
@@ -74,12 +70,16 @@ def getMotion():
 	beschleunigung_zout_skaliert = beschleunigung_zout / 16384.0
  
 	print "beschleunigung_xout: ", ("%6d" % beschleunigung_xout), " skaliert: ", beschleunigung_xout_skaliert
-	print "beschleunigung_yout: ", ("%6d" % beschleunigung_yout), " skaliert: ", beschleunigung_yout_skaliert
-	print "beschleunigung_zout: ", ("%6d" % beschleunigung_zout), " skaliert: ", beschleunigung_zout_skaliert
+	#print "beschleunigung_yout: ", ("%6d" % beschleunigung_yout), " skaliert: ", beschleunigung_yout_skaliert
+	#print "beschleunigung_zout: ", ("%6d" % beschleunigung_zout), " skaliert: ", beschleunigung_zout_skaliert
  
-	print "X Rotation: " , get_x_rotation(beschleunigung_xout_skaliert, beschleunigung_yout_skaliert, beschleunigung_zout_skaliert)
-	print "Y Rotation: " , get_y_rotation(beschleunigung_xout_skaliert, beschleunigung_yout_skaliert, beschleunigung_zout_skaliert)
+	#print "X Rotation: " , get_x_rotation(beschleunigung_xout_skaliert, beschleunigung_yout_skaliert, beschleunigung_zout_skaliert)
+	#print "Y Rotation: " , get_y_rotation(beschleunigung_xout_skaliert, beschleunigung_yout_skaliert, beschleunigung_zout_skaliert)
 	return beschleunigung_xout
+def getMotion():
+	x = sensor.get_accel_data()['x']
+	print(x)
+	return x
 GPIO.setmode(GPIO.BCM)
 
 GPIO_TRIGGER = 18
@@ -121,9 +121,9 @@ def distance():
  
 pwm = Adafruit_PCA9685.PCA9685()
 
-servo_min = 150  # Min pulse length out of 4096
-servo_max = 550  # Max pulse length out of 4096
-servo_mid = 450
+servo_min = 300  # Min pulse length out of 4096
+servo_max = 420  # Max pulse length out of 4096
+servo_mid = 320
 # Helper function to make setting a servo pulse width simpler.
 def set_servo_pulse(channel, pulse):
     pulse_length = 1000000    # 1,000,000 us per second
@@ -142,7 +142,7 @@ print('Moving servo on channel 0, press Ctrl-C to quit...')
 
 
 def drive(action):
-    servo = [0]*8
+    servo = [0]*4
     if action[0] == 0:
         servo[0] = servo_max
     else:
@@ -159,33 +159,32 @@ def drive(action):
         servo[3] = servo_max
     else:
         servo[3] = servo_mid
-    if action[4] == 0:
-        servo[4] = servo_max
-    else:
-        servo[4] = servo_mid
-    if action[5] == 0:
-        servo[5] = servo_max
-    else:
-        servo[5] = servo_mid
-    if action[6] == 0:
-        servo[6] = servo_max
-    else:
-        servo[6] = servo_mid
-    if action[7] == 0:
-        servo[7] = servo_max
-    else:
-        servo[7] = servo_mid
+    #if action[4] == 0:
+    #    servo[4] = servo_max
+    #else:
+    #    servo[4] = servo_mid
+    #if action[5] == 0:
+    #    servo[5] = servo_max
+    #else:
+    #    servo[5] = servo_mid
+    #if action[6] == 0:
+    #    servo[6] = servo_max
+    #else:
+    #    servo[6] = servo_mid
+    #if action[7] == 0:
+    #    servo[7] = servo_max
+    #else:
+    #    servo[7] = servo_mid
     # Iterate through the                                                                                                                                      positions sequence 3 times.
     
     
-    for i in range(8):
+    for i in range(4):
         pwm.set_pwm(i, 0, servo[i])
-    sleep(.5)
 
 
-action_num = 256
-observation_num = 8
-distance_riq = 0
+action_num = 16
+observation_num = 4
+distance_riq = 1
 RL = DeepQNetwork(n_actions=action_num,
                   n_features=observation_num,
                   learning_rate=0.01, e_greedy=0.9,
@@ -198,7 +197,7 @@ actionDrive = [0,0,0,0]
 
 def convert(action):
     
-    actionDrive = '{0:08b}'.format(action)
+    actionDrive = '{0:04b}'.format(action)
     actionDrive = list(actionDrive)
     
     drive(map(int,actionDrive))
@@ -251,62 +250,78 @@ def convert(action):
 ##    actionDrive = [1,1,1,1]
 ##    drive(actionDrive)
     return actionDrive
-senses = []
+#senses = []
   #drive(actionDrive)
-for _ in range(10):
-    sense_sum=0
-    for i  in range(10):
-        sense_sum += getMotion()
-        sleep(.05)
-    sense = sense_sum/10.0
-    senses.append(sense)
-
-max_stable = np.max(senses)
-
-for i_episode in range(10):
-    print(str(i_episode))
-    observation = np.array([0,0,0,0,0,0,0,0])
+#obb = np.int64(16)
+#convert(obb)
+observation = [0,0,0,0]
+#sleep(0.5)
+#for _ in range(10):
+#    for i  in range(10):
+#        senses.append( getMotion())
+#        sleep(.05)
+#max_stable = np.max(senses)
+#print("\n\n"+str(max_stable))
+#sleep(5)
+for i in range(4):
+       pwm.set_pwm(i, 0, 375)
+sleep(2)
+for i in range(4):
+       pwm.set_pwm(i, 0, 450)
+sleep(2)
+for i_episode in range(100):
+    print("\n i = "+str(i_episode))
     #convert(observation)
     ep_r = 0
-
-    action = RL.choose_action(observation)
+    obb = np.int64(16)
+    #action = RL.choose_action([0,0,0,0,0,0,0,0])
+    #action2 = RL.choose_action(action)
 
     for _ in range(4):
-     #    #predistance = distance()
-	    # print("pre destance = " +str(predistance))
+     	predistance = distance()
+     	print("pre destance = " +str(predistance))
      #    preacc = getMotion()
 	    # curacc = getMotion()
-     #    curdistance = distance()
-	    # print("destance = " +str( curdistance))
-     #    #divdistance = curdistance - predistance
+	action = RL.choose_action(observation)
+	actionDrive = convert(action)
+	sleep(.5)
+     	curdistance = distance()
+     	print("destance = " +str( curdistance))
+     	divdistance = curdistance - predistance
 	    # #difacc = curacc-preacc
 
-        actionDrive = convert(action)
-	sense_sum=0
-        for i  in range(10):
-            sense_sum += getMotion()
-            sleep(.05)
-        sense = sense_sum/10.0
+        #actionDrive = convert(action)
+	#senses = []
+    	#for i  in range(10):
+        #	senses.append( getMotion())
+        #	sleep(.05)
+	#max_sense = np.max(senses)
+
+        #actionDrive = convert(action2)
 
         observation_ = actionDrive
-        
-        r = sense - max_stable
+        #print ("\n\n sense = "+str(max_sense))
+   
+	#sleep(.5)
+        #r = sense - max_stable
 
         # the smaller theta and closer to center the better
-        if r > 0:
-          reward = r
+        if divdistance > distance_riq :
+          reward = divdistance*100
+	  print("\n Reward + "+str(reward))
         else:
-          reward = -r
+          reward = -100
 
-        if r > 300:
-            RL.store_transition(observation, action, reward, observation_)
-            RL.store_transition(observation, action, reward, observation_)
-            RL.store_transition(observation, action, reward, observation_)
+#        if sense > 300:
+#	    print("Reward300 + ")
+ #           RL.store_transition(observation, action, reward, observation_)
+  #          RL.store_transition(observation, action, reward, observation_)
+   #         RL.store_transition(observation, action, reward, observation_)
 
         RL.store_transition(observation, action, reward, observation_)
 
         ep_r += reward
-        if total_steps > 100:
+        if total_steps > 10:
             RL.learn()
 
         observation = observation_
