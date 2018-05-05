@@ -183,24 +183,26 @@ for o in range(5):
 	print "hy"
 	servo([0,0,0,0])
 max_dis = 0
-for z in range(20):
+for z in range(100):
     #rd = np.random.randn(8) * 0.3
     #rd[[1,3,5,7]] = 0
     #test_angles = np.clip(s+rd, -1,1)
-
+    print("\n\n"+str(z)+"\n\n")
     #for i in np.linspace(0,1,10):
     #    servo((1-i) * last_s + i * test_angles)
     test_angles = np.zeros(4)
     test_angles = np.random.choice([-.25,0,.25],4)
     test_angles2 = np.random.choice([-.25,0,.25],4)
+    test_angles3 = np.random.choice([-.25,0,.25],4)
     pre_distance = distance()
     for u in range(4):
         servo(test_angles)
         servo(test_angles2)
+        servo(test_angles3)
     cur_distance = distance()
     #last_s = test_angles.copy()
     div_distance = cur_distance - pre_distance
-    a.append([div_distance,test_angles,test_angles2])
+    a.append([div_distance,test_angles,test_angles2,test_angles3])
     # if div_distance > max_dis:
     #     max_dis = div_distance
     #     action1_max = test_angles
@@ -218,10 +220,13 @@ with open('outfile', 'wb') as fp:
 # with open ('outfile', 'rb') as fp:
 #     itemlist = pickle.load(fp)
 for pp in range(5):
-    for p in range(50):
+    print(pp)
+    sleep(5)
+    for p in range(20):
         servo(a[pp][1])
         servo(a[pp][2])
-        sleep(.2)
+        servo(a[pp][3])
+        sleep(.1)
 
 #angles = np.loadtxt('newangles.txt')
 #senses = np.loadtxt('newsenses.txt')
