@@ -311,10 +311,10 @@ for i in range(30):
 
 
 for i in range(100):
-    print(str(i))
+    	print(str(i))
 	joint_angles = model.predict(np.array([[4,4]]))[0]
 	servo(joint_angles[:4])
-    servo(joint_angles[4:8])
+	servo(joint_angles[4:8])
     #joint_angles = model.predict(np.array([[-5,-5]]))[0]
     #servo(joint_angles)
 '''
