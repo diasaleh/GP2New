@@ -128,7 +128,7 @@ for z in range(0):
     test_angles = np.random.choice([-.25,0,.25],4)
     test_angles2 = np.random.choice([-.25,0,.25],4)
    # test_angles3 = np.random.choice([-.25,0,.25],4)
-    pre_distance = distance()
+    # pre_distance = distance()
     for t in range(10):
         acc.append(getMotion())
     for u in range(4):
@@ -137,9 +137,9 @@ for z in range(0):
         #servo(test_angles3)
     for t in range(10):
         acc.append(getMotion())
-    cur_distance = distance()
+    # cur_distance = distance()
     #last_s = test_angles.copy()
-    div_distance = cur_distance - pre_distance
+    # div_distance = cur_distance - pre_distance
     a.append([acc,test_angles,test_angles2])
     # if div_distance > max_dis:
     #     max_dis = div_distance
