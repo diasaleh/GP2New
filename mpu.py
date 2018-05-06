@@ -159,7 +159,7 @@ def servo(action):
     action = list(map(scaling,action))
     for i in range(4):
         pwm.set_pwm(i, 0,int( action[i]))
-    sleep(.5)
+    sleep(.1)
 
 action_num = 256
 observation_num = 8
@@ -194,14 +194,20 @@ for z in range(100):
     #for i in np.linspace(0,1,10):
     #    servo((1-i) * last_s + i * test_angles)
     test_angles = np.zeros(4)
-    test_angles = np.random.choice([-.5,-.25,0,.25,.5],4)
+    test_angles = np.random.choice([-.25,0,.25],4)
+    test_angles2 = np.random.choice([-.25,0,.25],4)
+   # test_angles3 = np.random.choice([-.25,0,.25],4)
     pre_distance = distance()
-    servo(test_angles)
+    for u in range(4):
+        servo(test_angles)
+        servo(test_angles2)
     cur_distance = distance()
-    #last_s = test_angles.copy()
     div_distance = cur_distance - pre_distance
-    sleep(.5)
     print(cur_distance)
+
+    servo([0,0,0,0])   
+    sleep(.5)
+
     sense = np.zeros(2)
     #for i  in range(10):
     #    sense_sum += np.array(getMotion())
