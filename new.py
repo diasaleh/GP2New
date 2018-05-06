@@ -129,33 +129,32 @@ for z in range(100):
     test_angles2 = np.random.choice([-.25,0,.25],4)
    # test_angles3 = np.random.choice([-.25,0,.25],4)
     # pre_distance = distance()
-    for t in range(10):
-        acc.append(getMotion())
     for u in range(4):
         servo(test_angles)
         servo(test_angles2)
         #servo(test_angles3)
     for t in range(10):
         acc.append(getMotion())
+    acc_max = max(acc)
     # cur_distance = distance()
     #last_s = test_angles.copy()
     # div_distance = cur_distance - pre_distance
-    a.append([acc,test_angles,test_angles2])
+    a.append([acc_max,test_angles,test_angles2])
     # if div_distance > max_dis:
     #     max_dis = div_distance
     #     action1_max = test_angles
     #     action2_max = test_angles2
 
-    print(acc)
+    print(acc_max)
     acc = []
     servo([0,0,0,0])   
     sleep(.5)
 
     #np.savetxt('newangles_m.txt', angles)
     #np.savetxt('newsenses_m.txt', senses)
-#a = sorted(a, key=itemgetter(0),reverse=True)
-#with open('outfileDelay1', 'wb') as fp:
-#    pickle.dump(a, fp)
+a = sorted(a, key=itemgetter(0),reverse=True)
+with open('outfileDelay1_acc', 'wb') as fp:
+   pickle.dump(a, fp)
 
 # with open ('outfileDelay1', 'rb') as fp:
 #      a = pickle.load(fp)
@@ -168,29 +167,29 @@ for z in range(100):
 
 print  (a)
 
-# for pp in range(4):
-#     print(pp)
-#     sleep(5)
-#     for p in range(50):
-# 	print(a[pp])
-#         #servo(a[len(a)-1][1])
-#         #servo(a[len(a)-1][2])
-#         #servo(a[len(a)-1][3])
-# 	servo(a[pp][1])
-#         servo(a[pp][2])
-#         #servo(a[0][3])
-# sleep(3)
-# for pp in range(1):
-#     print(pp)
-#     sleep(5)
-#     for p in range(100):
-#         print(a[len(a)-1])
-#         servo(a[len(a)-1][1])
-#         servo(a[len(a)-1][2])
+for pp in range(4):
+    print(pp)
+    sleep(5)
+    for p in range(50):
+	print(a[pp])
+        #servo(a[len(a)-1][1])
+        #servo(a[len(a)-1][2])
         #servo(a[len(a)-1][3])
-        #servo(a[0][1])
-        #servo(a[0][2])
+	    servo(a[pp][1])
+        servo(a[pp][2])
         #servo(a[0][3])
+sleep(3)
+for pp in range(1):
+    print(pp)
+    sleep(5)
+    for p in range(100):
+        print(a[len(a)-1])
+        servo(a[len(a)-1][1])
+        servo(a[len(a)-1][2])
+        # servo(a[len(a)-1][3])
+       #  servo(a[0][1])
+       #  servo(a[0][2])
+       #  servo(a[0][3])
        # sleep(.1)
 #angles = np.loadtxt('newangles.txt')
 #senses = np.loadtxt('newsenses.txt')
