@@ -175,7 +175,7 @@ for pp in range(4):
         #servo(a[len(a)-1][1])
         #servo(a[len(a)-1][2])
         #servo(a[len(a)-1][3])
-	    servo(a[pp][1])
+        servo(a[pp][1])
         servo(a[pp][2])
         #servo(a[0][3])
 sleep(3)
