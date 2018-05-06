@@ -234,17 +234,17 @@ for z in range(0):
 
 angles = np.loadtxt('newangles2bro.txt')
 senses = np.loadtxt('newsenses2bro.txt')
-for x in range(len(senses)):
-    a.append([senses[x][0],angles[x]])
+#for x in range(len(senses)):
+#    a.append([senses[x][0],angles[x]])
 
-a = sorted(a, key=itemgetter(0),reverse=True)
-print(a)
-sleep(5)
+#a = sorted(a, key=itemgetter(0),reverse=True)
+#print(a)
+#sleep(5)
 #with open('a_sorted_mpu_4servo', 'wb') as fp:
- #   pickle.dump(a, fp)
+#    pickle.dump(a, fp)
 
-#with open ('a_sorted_mpu_4servo', 'rb') as fp:
-#    a = pickle.load(fp)
+with open ('a_sorted_mpu_4servo', 'rb') as fp:
+    a = pickle.load(fp)
 print(a)
 
 u = np.mean(senses, axis = 0)
@@ -298,7 +298,7 @@ for i in range(30):
     for m in T:
         joint_angles.append(model.predict(np.array([[m, 0]]))[0])
 
-    clear_output(wait=True)
+#    clear_output(wait=True)
 
    # fig = plt.plot(T, joint_angles)
     #plt.show()
@@ -311,12 +311,13 @@ for i in range(30):
 T = np.linspace(0, np.pi*2.0 , 20)
 
 
-for i in range(300):
+for i in range(20):
     print(str(i))
-    joint_angles = model.predict(np.array([[T[0],T[0]]]))[0]
-    servo(joint_angles)
-    joint_angles = model.predict(np.array([[T[19],T[19]]]))[0]
-    servo(joint_angles)
+    for t in T:
+    	joint_angles = model.predict(np.array([[np.sin(t)*2.5,np.cos(t)*2.5]]))[0]
+    	servo(joint_angles)
+    #joint_angles = model.predict(np.array([[-5,-5]]))[0]
+    #servo(joint_angles)
 '''
 for i in range(30):
     print(str(i))
