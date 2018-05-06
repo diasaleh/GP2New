@@ -134,7 +134,7 @@ for z in range(100):
         #servo(test_angles3)
     for t in range(10):
         acc.append(getMotion())
-    acc_max = max(acc)
+    acc_max = np.average(np.array(acc))
     # cur_distance = distance()
     #last_s = test_angles.copy()
     # div_distance = cur_distance - pre_distance
