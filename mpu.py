@@ -9,7 +9,10 @@ import time
 import pickle
 import random
 from RL_brain import DeepQNetwork
-
+import operator
+import pickle
+import collections
+from operator import itemgetter
 import numpy as np
 import Adafruit_PCA9685
 
@@ -186,7 +189,7 @@ a=[]
 for o in range(5):
 	print "hy"
 	servo([0,0,0,0])
-for z in range(100):
+for z in range(0):
     #rd = np.random.randn(8) * 0.3
     #rd[[1,3,5,7]] = 0
     #test_angles = np.clip(s+rd, -1,1)
@@ -228,15 +231,22 @@ for z in range(100):
     a.append([sense[0],test_angles])
     np.savetxt('newangles2bro.txt', angles)
     np.savetxt('newsenses2bro.txt', senses)
-a = sorted(a, key=itemgetter(0),reverse=True)
-with open('a_sorted_mpu_4servo', 'wb') as fp:
-    pickle.dump(a, fp)
+
+angles = np.loadtxt('newangles2bro.txt')
+senses = np.loadtxt('newsenses2bro.txt')
+for x in range(len(senses)):
+    a.append([senses[x][0],test_angles[x]])
+
+print(a)
+sleep(5)
+#a = sorted(a, key=itemgetter(0),reverse=True)
+#with open('a_sorted_mpu_4servo', 'wb') as fp:
+ #   pickle.dump(a, fp)
 
 #with open ('a_sorted_mpu_4servo', 'rb') as fp:
 #    a = pickle.load(fp)
 print(a)
-#angles = np.loadtxt('newangles.txt')
-#senses = np.loadtxt('newsenses.txt')
+
 u = np.mean(senses, axis = 0)
 std = np.std(senses, axis = 0)
 
