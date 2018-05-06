@@ -15,7 +15,7 @@ from mpu6050 import mpu6050
 sensor = mpu6050(0x68)
 
 def getMotion():
-    x = sensor.get_accel_data()['y']
+    x = sensor.get_accel_data()['x']
     return x
 bus = smbus.SMBus(1) # bus = smbus.SMBus(0) fuer Revision 1
 address = 0x68       # via i2cdetect
@@ -129,14 +129,10 @@ for z in range(100):
    # test_angles3 = np.random.choice([-.25,0,.25],4)
     # pre_distance = distance()
     for u in range(4):
-        for t in range(10):
-            acc.append(getMotion())
         servo(test_angles)
-        for t in range(10):
-            acc.append(getMotion())
         servo(test_angles2)
-        for t in range(10):
-            acc.append(getMotion())
+    for t in range(10):
+        acc.append(getMotion())
         #servo(test_angles3)
     acc_max = max(acc)
     # cur_distance = distance()
