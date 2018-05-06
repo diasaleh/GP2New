@@ -116,7 +116,7 @@ for o in range(5):
 	print "hy"
 	servo([0,0,0,0])
 max_dis = 0
-for z in range(100):
+for z in range(0):
     #rd = np.random.randn(8) * 0.3
     #rd[[1,3,5,7]] = 0
     #test_angles = np.clip(s+rd, -1,1)
@@ -130,9 +130,17 @@ for z in range(100):
     # pre_distance = distance()
     for u in range(4):
         servo(test_angles)
+	sum1 = 0
+	for t in range(10):
+        	sum1 += getMotion()
+	sum1 = sum1/10.0
+	acc.append(sum1)
         servo(test_angles2)
-    for t in range(10):
-        acc.append(getMotion())
+	sum2 = 0
+    	for t in range(10):
+                sum2 += getMotion()
+	sum2 = sum2/10.0
+        acc.append(sum2)
         #servo(test_angles3)
     acc_max = max(acc)
     # cur_distance = distance()
@@ -151,12 +159,12 @@ for z in range(100):
 
     #np.savetxt('newangles_m.txt', angles)
     #np.savetxt('newsenses_m.txt', senses)
-a = sorted(a, key=itemgetter(0),reverse=True)
-with open('outfileDelay1_acc', 'wb') as fp:
-   pickle.dump(a, fp)
+#a = sorted(a, key=itemgetter(0),reverse=True)
+#with open('outfileDelay1_acc', 'wb') as fp:
+ #  pickle.dump(a, fp)
 
-# with open ('outfileDelay1', 'rb') as fp:
-#      a = pickle.load(fp)
+with open ('outfileDelay1_acc', 'rb') as fp:
+      a = pickle.load(fp)
 # a = sorted(a, key=itemgetter(0),reverse=True)
 # # with open('outfile', 'wb') as fp:
 # #     pickle.dump(a, fp)
@@ -166,10 +174,10 @@ with open('outfileDelay1_acc', 'wb') as fp:
 
 print  (a)
 
-for pp in range(4):
+for pp in range(len(a)):
     print(pp)
     sleep(5)
-    for p in range(50):
+    for p in range(30):
 	print(a[pp])
         #servo(a[len(a)-1][1])
         #servo(a[len(a)-1][2])
@@ -177,6 +185,7 @@ for pp in range(4):
         servo(a[pp][1])
         servo(a[pp][2])
         #servo(a[0][3])
+'''
 sleep(3)
 for pp in range(1):
     print(pp)
@@ -193,3 +202,4 @@ for pp in range(1):
 #angles = np.loadtxt('newangles.txt')
 #senses = np.loadtxt('newsenses.txt')
 
+'''
