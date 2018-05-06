@@ -182,6 +182,7 @@ senses = []
 s = np.array([1,0,1,0], dtype=np.float64)
 last_s = s.copy()
 sleep(1)
+a=[]
 for o in range(5):
 	print "hy"
 	servo([0,0,0,0])
@@ -211,15 +212,18 @@ for z in range(100):
 
     angles.append(test_angles.copy())
     senses.append(sense)
+
     #print(sense)
     #clear_output(wait=True)
     #a = np.array(senses)
     #fig = plt.plot(a[:,0], c = 'r')
     #fig = plt.plot(a[:,1], c = 'b')
     #plt.show()
-
+    a.append(sense[0],test_angles)
     np.savetxt('newangles2bro.txt', angles)
     np.savetxt('newsenses2bro.txt', senses)
+a = sorted(a, key=itemgetter(0),reverse=True)
+print(a)
 #angles = np.loadtxt('newangles.txt')
 #senses = np.loadtxt('newsenses.txt')
 u = np.mean(senses, axis = 0)
