@@ -235,7 +235,7 @@ for z in range(0):
 angles = np.loadtxt('newangles2bro.txt')
 senses = np.loadtxt('newsenses2bro.txt')
 for x in range(len(senses)):
-    a.append([senses[x][0],test_angles[x]])
+    a.append([senses[x][0],angles[x]])
 
 print(a)
 sleep(5)
