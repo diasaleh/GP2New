@@ -237,9 +237,9 @@ senses = np.loadtxt('newsenses2bro.txt')
 for x in range(len(senses)):
     a.append([senses[x][0],angles[x]])
 
+a = sorted(a, key=itemgetter(0),reverse=True)
 print(a)
 sleep(5)
-#a = sorted(a, key=itemgetter(0),reverse=True)
 #with open('a_sorted_mpu_4servo', 'wb') as fp:
  #   pickle.dump(a, fp)
 
