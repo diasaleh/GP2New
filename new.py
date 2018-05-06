@@ -16,7 +16,6 @@ sensor = mpu6050(0x68)
 
 def getMotion():
     x = sensor.get_accel_data()['y']
-    print(x)
     return x
 bus = smbus.SMBus(1) # bus = smbus.SMBus(0) fuer Revision 1
 address = 0x68       # via i2cdetect
