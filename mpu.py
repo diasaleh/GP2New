@@ -219,7 +219,7 @@ for z in range(100):
     #fig = plt.plot(a[:,0], c = 'r')
     #fig = plt.plot(a[:,1], c = 'b')
     #plt.show()
-    a.append(sense[0],test_angles)
+    a.append([sense[0],test_angles])
     np.savetxt('newangles2bro.txt', angles)
     np.savetxt('newsenses2bro.txt', senses)
 a = sorted(a, key=itemgetter(0),reverse=True)
