@@ -189,7 +189,7 @@ a=[]
 for o in range(5):
 	print "hy"
 	servo([0,0,0,0])
-for z in range(100):
+for z in range(0):
     #rd = np.random.randn(8) * 0.3
     #rd[[1,3,5,7]] = 0
     #test_angles = np.clip(s+rd, -1,1)
@@ -231,19 +231,19 @@ for z in range(100):
     np.savetxt('angles_mpu_4servo_2actions.txt', angles)
     np.savetxt('senses_mpu_4servo_2actions.txt', senses)
 
-#angles = np.loadtxt('angles_mpu_4servo_2actions.txt')
-#senses = np.loadtxt('senses_mpu_4servo_2actions.txt')
-for x in range(len(senses)):
-    a.append([senses[x][0],angles[x]])
+angles = np.loadtxt('angles_mpu_4servo_2actions.txt')
+senses = np.loadtxt('senses_mpu_4servo_2actions.txt')
+#for x in range(len(senses)):
+#    a.append([senses[x][0],angles[x]])
 
-a = sorted(a, key=itemgetter(0),reverse=True)
+#a = sorted(a, key=itemgetter(0),reverse=True)
 #print(a)
 #sleep(5)
-with open('a_sorted_mpu_4servo_2actions', 'wb') as fp:
-    pickle.dump(a, fp)
+#with open('a_sorted_mpu_4servo_2actions', 'wb') as fp:
+#    pickle.dump(a, fp)
 
-#with open ('a_sorted_mpu_4servo_2actions', 'rb') as fp:
-#    a = pickle.load(fp)
+with open ('a_sorted_mpu_4servo_2actions', 'rb') as fp:
+    a = pickle.load(fp)
 print(a)
 
 u = np.mean(senses, axis = 0)
@@ -310,11 +310,38 @@ for i in range(30):
 #T = np.linspace(0, np.pi*2.0 , 20)
 
 
-for i in range(100):
+for i in range(50):
     	print(str(i))
 	joint_angles = model.predict(np.array([[4,4]]))[0]
 	servo(joint_angles[:4])
 	servo(joint_angles[4:8])
+    #joint_angles = model.predict(np.array([[-5,-5]]))[0]
+    #servo(joint_angles)
+
+
+for i in range(50):
+        print(str(i))
+        joint_angles = model.predict(np.array([[5.62,5.62]]))[0]
+        servo(joint_angles[:4])
+        servo(joint_angles[4:8])
+    #joint_angles = model.predict(np.array([[-5,-5]]))[0]
+    #servo(joint_angles)
+
+
+for i in range(50):
+        print(str(i))
+        joint_angles = model.predict(np.array([[-5.94,-5.94]]))[0]
+        servo(joint_angles[:4])
+        servo(joint_angles[4:8])
+    #joint_angles = model.predict(np.array([[-5,-5]]))[0]
+    #servo(joint_angles)
+
+for i in range(50):
+        print(str(i))
+        joint_angles = model.predict(np.array([[5,5]]))[0]
+        servo(joint_angles[:4])
+	joint_angles = model.predict(np.array([[-5,-5]]))[0]
+        servo(joint_angles[:4])
     #joint_angles = model.predict(np.array([[-5,-5]]))[0]
     #servo(joint_angles)
 '''
