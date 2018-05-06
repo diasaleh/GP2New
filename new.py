@@ -96,7 +96,7 @@ def servo(action):
     action = list(map(scaling,action))
     for i in range(4):
         pwm.set_pwm(i, 0,int( action[i]))
-    sleep(.5)
+    sleep(.1)
 
 action_num = 256
 observation_num = 8
