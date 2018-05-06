@@ -196,7 +196,6 @@ for z in range(0):
 
     #for i in np.linspace(0,1,10):
     #    servo((1-i) * last_s + i * test_angles)
-    test_angles = np.zeros(4)
     test_angles = np.random.choice([-.25,0,.25],4)
     test_angles2 = np.random.choice([-.25,0,.25],4)
    # test_angles3 = np.random.choice([-.25,0,.25],4)
@@ -218,8 +217,8 @@ for z in range(0):
     sense[0] = div_distance
     sense[1] = div_distance
     #sense = sense_sum/10.0
-
-    angles.append(test_angles.copy())
+    test_ang = np.concatenate((test_angles, test_angles2), axis=0)
+    angles.append(test_ang)
     senses.append(sense)
 
     #print(sense)
@@ -229,22 +228,22 @@ for z in range(0):
     #fig = plt.plot(a[:,1], c = 'b')
     #plt.show()
     a.append([sense[0],test_angles])
-    np.savetxt('newangles2bro.txt', angles)
-    np.savetxt('newsenses2bro.txt', senses)
+    np.savetxt('angles_mpu_4servo_2actions.txt', angles)
+    np.savetxt('senses_mpu_4servo_2actions.txt', senses)
 
-angles = np.loadtxt('newangles2bro.txt')
-senses = np.loadtxt('newsenses2bro.txt')
-#for x in range(len(senses)):
-#    a.append([senses[x][0],angles[x]])
+#angles = np.loadtxt('angles_mpu_4servo_2actions.txt')
+#senses = np.loadtxt('senses_mpu_4servo_2actions.txt')
+for x in range(len(senses)):
+    a.append([senses[x][0],angles[x]])
 
-#a = sorted(a, key=itemgetter(0),reverse=True)
+a = sorted(a, key=itemgetter(0),reverse=True)
 #print(a)
 #sleep(5)
-#with open('a_sorted_mpu_4servo', 'wb') as fp:
-#    pickle.dump(a, fp)
+with open('a_sorted_mpu_4servo_2actions', 'wb') as fp:
+    pickle.dump(a, fp)
 
-with open ('a_sorted_mpu_4servo', 'rb') as fp:
-    a = pickle.load(fp)
+#with open ('a_sorted_mpu_4servo_2actions', 'rb') as fp:
+#    a = pickle.load(fp)
 print(a)
 
 u = np.mean(senses, axis = 0)
@@ -279,7 +278,7 @@ single_axis = np.array(senses_norm)
 model = Sequential()
 model.add(Dense(64, input_dim=2)) #two for xy
 model.add(Activation('tanh'))
-model.add(Dense(4))
+model.add(Dense(8))
 model.add(Activation('tanh'))
 
 #for a mean squared error regression problem
@@ -294,9 +293,9 @@ T = np.linspace(np.min(axis_vis), np.max(axis_vis), 30)
 for i in range(30):
     model.fit(senses_norm[:,:2], np.array(angles), verbose=False, epochs=10)
 
-    joint_angles = []
-    for m in T:
-        joint_angles.append(model.predict(np.array([[m, 0]]))[0])
+#    joint_angles = []
+#    for m in T:
+#        joint_angles.append(model.predict(np.array([[m, 0]]))[0])
 
 #    clear_output(wait=True)
 
@@ -308,14 +307,14 @@ for i in range(30):
 #    servo(joint_angles)
 #    sleep(.1)
 
-T = np.linspace(0, np.pi*2.0 , 20)
+#T = np.linspace(0, np.pi*2.0 , 20)
 
 
-for i in range(20):
+for i in range(100):
     print(str(i))
-    for t in T:
-    	joint_angles = model.predict(np.array([[np.sin(t)*2.5,np.cos(t)*2.5]]))[0]
-    	servo(joint_angles)
+	joint_angles = model.predict(np.array([[4,4]]))[0]
+	servo(joint_angles[:4])
+    servo(joint_angles[4:8])
     #joint_angles = model.predict(np.array([[-5,-5]]))[0]
     #servo(joint_angles)
 '''
