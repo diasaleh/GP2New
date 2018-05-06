@@ -96,7 +96,7 @@ def servo(action):
     action = list(map(scaling,action))
     for i in range(4):
         pwm.set_pwm(i, 0,int( action[i]))
-    sleep(.1)
+    sleep(.5)
 
 action_num = 256
 observation_num = 8
@@ -117,7 +117,7 @@ for o in range(5):
 	print "hy"
 	servo([0,0,0,0])
 max_dis = 0
-for z in range(0):
+for z in range(100):
     #rd = np.random.randn(8) * 0.3
     #rd[[1,3,5,7]] = 0
     #test_angles = np.clip(s+rd, -1,1)
