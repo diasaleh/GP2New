@@ -129,12 +129,16 @@ for z in range(100):
    # test_angles3 = np.random.choice([-.25,0,.25],4)
     # pre_distance = distance()
     for u in range(4):
+        for t in range(10):
+            acc.append(getMotion())
         servo(test_angles)
+        for t in range(10):
+            acc.append(getMotion())
         servo(test_angles2)
+        for t in range(10):
+            acc.append(getMotion())
         #servo(test_angles3)
-    for t in range(10):
-        acc.append(getMotion())
-    acc_max = np.average(np.array(acc))
+    acc_max = max(acc)
     # cur_distance = distance()
     #last_s = test_angles.copy()
     # div_distance = cur_distance - pre_distance
