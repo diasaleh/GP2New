@@ -1,5 +1,5 @@
 import time
-timee = 0.2
+timee = 0.4
 import smbus
 import math
  
