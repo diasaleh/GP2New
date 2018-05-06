@@ -6,7 +6,7 @@ from keras.layers import Dense, Activation, Dropout, Flatten, MaxPooling2D, Conv
 from keras import backend as K
 import RPi.GPIO as GPIO
 import time
-
+import pickle
 import random
 from RL_brain import DeepQNetwork
 
@@ -223,6 +223,11 @@ for z in range(100):
     np.savetxt('newangles2bro.txt', angles)
     np.savetxt('newsenses2bro.txt', senses)
 a = sorted(a, key=itemgetter(0),reverse=True)
+with open('a_sorted_mpu_4servo', 'wb') as fp:
+    pickle.dump(a, fp)
+
+#with open ('a_sorted_mpu_4servo', 'rb') as fp:
+#    a = pickle.load(fp)
 print(a)
 #angles = np.loadtxt('newangles.txt')
 #senses = np.loadtxt('newsenses.txt')
