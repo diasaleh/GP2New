@@ -215,10 +215,10 @@ for z in range(100):
     #np.savetxt('newangles_m.txt', angles)
     #np.savetxt('newsenses_m.txt', senses)
 a = sorted(a, key=itemgetter(0),reverse=True)
-with open('outfile', 'wb') as fp:
-    pickle.dump(a, fp)
-# with open ('outfile', 'rb') as fp:
-#     itemlist = pickle.load(fp)
+# with open('outfile', 'wb') as fp:
+#     pickle.dump(a, fp)
+with open ('outfile', 'rb') as fp:
+    itemlist = pickle.load(fp)
 for pp in range(5):
     print(pp)
     sleep(5)
