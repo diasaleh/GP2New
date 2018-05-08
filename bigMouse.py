@@ -19,7 +19,7 @@ import math
 import threading
 file = open( "/dev/input/mice", "rb" );
 speed=150
-learning_episodes = 100
+learning_episodes = 0
 
 exitFlag = [0]*learning_episodes
 results = [None] * learning_episodes
@@ -55,7 +55,7 @@ def scaling(x):
 
 def getMouseData(idd,results):
 
-	a=[0]*4
+	a=[0]*2
 	print (threading.currentThread().getName(), 'Starting '+str(idd))
 	while( not exitFlag[idd] ):
         	[l,m,r,x,y]=getMouseEvent() #Get the inputs from the mouse
@@ -66,19 +66,19 @@ def getMouseData(idd,results):
         #If there is a signinficant mouse movement Up (positive y-axis)
         	if y >20:
             		print("fwd()")  #Move forward
-            		a[0] = a[0]+1
+            		a[0] = a[0]+y
         #If there is a signinficant mouse movement Down (negative y-axis)
         	elif y<-20:
             		print("bwd()")  #Move Back
-            		a[1] = a[1]+1
+            		a[0] = a[0]+y
         #If there is a signinficant mouse movement Left (positive x-axis)
         	elif x<-20:
             		print("left()") #Move left
-           	        a[2] = a[2]+1
+           	        a[1] = a[1]+1
         #If there is a signinficant mouse movement Right (negative x-axis)
         	elif x>20:
             		print("right()")    #Move Right
-            		a[3] = a[3]+1
+            		a[1] = a[1]-1
         	time.sleep(.01)
 		results[idd] = a
 	print (threading.currentThread().getName(), 'Exiting '+str(idd))
@@ -171,8 +171,8 @@ for i in range(learning_episodes):
 	# sum2 = sum2/10.0
  #        acc.append(sum2)
         #servo(test_angles3)
-    w.start()
     t.start()
+    w.start()
     w.join()
     t.join()
     # sum_array.append(np.sum(results[i],axis=0))
@@ -195,21 +195,22 @@ for i in range(learning_episodes):
     #np.savetxt('newangles_m.txt', angles)
     #np.savetxt('newsenses_m.txt', senses)
 #a_sorted = sorted(a, key=itemgetter(0),reverse=True)
-with open('outfileMouseBig_results_array', 'wb') as fp:
-  pickle.dump(results, fp)
-with open('outfileMouseBig_a_array', 'wb') as fp:
-  pickle.dump(a, fp)
-# with open('outfileMouse_sum_array', 'wb') as fp:
+
+#with open('outfileMouseBig_results_array_diff', 'wb') as fp:
+ # pickle.dump(results, fp)
+#with open('outfileMouseBig_a_array_diff', 'wb') as fp:
+#  pickle.dump(a, fp)
+#with open('', 'wb') as fp:
 #   pickle.dump(sum_array, fp)
-# print (sum_array)
+#print (sum_array)
 
-# with open ('outfileMouse_sum_array', 'rb') as fp:
-#        sum_array1 = pickle.load(fp)
-
-# with open ('outfileMouse_a_array', 'rb') as fp:
+#with open ('outfileMouseBig_a_array_diff', 'rb') as fp:
 #        a = pickle.load(fp)
-# for c in range(len(a)):
-# 	a[c][0] = sum_array1[c][1]
+
+with open ('outfileMouseBig_a_array_diff', 'rb') as fp:
+        a = pickle.load(fp)
+#for c in range(len(a)):
+ #	a[c][0] = sum_array1[c][1]
 a_sorted = sorted(a, key=itemgetter(0),reverse=True)
  # with open('outfile', 'wb') as fp:
 # #     pickle.dump(a, fp)
@@ -217,9 +218,9 @@ a_sorted = sorted(a, key=itemgetter(0),reverse=True)
 #     itemlist = pickle.load(fp)
 
 
-# print  (a)
+print  (a_sorted)
 
-for pp in range(10):
+for pp in range(0):
      print(pp)
      sleep(5)
      for p in range(40):
@@ -233,13 +234,14 @@ for pp in range(10):
         #servo(a[0][3])
 
 sleep(3)
-for pp in range(1):
+for pp in range(10):
     print(pp)
+    pp=pp+1
     sleep(5)
     for p in range(100):
-        print(a_sorted[len(a_sorted)-1])
-        servo(a_sorted[len(a_sorted)-1][1][0])
-        servo(a_sorted[len(a_sorted)-1][1][1])
+        print(a_sorted[len(a_sorted)-pp])
+        servo(a_sorted[len(a_sorted)-pp][1][0])
+        servo(a_sorted[len(a_sorted)-pp][1][1])
         # servo(a[len(a)-1][3])
        #  servo(a[0][1])
        #  servo(a[0][2])
