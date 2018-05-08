@@ -57,7 +57,7 @@ def getMouseData(idd,results):
 
 	a=[0]*4
 	print (threading.currentThread().getName(), 'Starting '+str(idd))
-	while( 1 ):
+	while( not exitFlag[idd] ):
         	[l,m,r,x,y]=getMouseEvent() #Get the inputs from the mouse
         # if debug:
         #     print l,m,r,x,y
