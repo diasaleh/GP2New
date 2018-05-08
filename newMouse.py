@@ -31,11 +31,8 @@ def scaling(x):
 VID = 0x0
 PID = 0x3825
 DATA_SIZE = 4
-<<<<<<< HEAD
-learning_episodes = 0
-=======
-learning_episodes = 5
->>>>>>> 56c77ce2adac78074d397908ae14a82d9a8709f9
+learning_episodes = 100
+
 exitFlag = [0]*learning_episodes
 results = [None] * learning_episodes
 # printina modulio vidurius :for i in dir(usb.util): print i
@@ -70,11 +67,8 @@ def getMouseData(idd,results):
 	while data[0] != 3 and (not exitFlag[idd]):
 	    try:
 	        data = device.read(endpoint.bEndpointAddress, endpoint.wMaxPacketSize)
-<<<<<<< HEAD
-#	        print (data[2:])
-=======
+
 	        print (data[2:])
->>>>>>> 56c77ce2adac78074d397908ae14a82d9a8709f9
 	        a.append(data[2:])    
 	    
 	    except usb.core.USBError as e:
@@ -139,15 +133,10 @@ a=[]
 acc=[]
 for o in range(5):
 	print "hy"
-<<<<<<< HEAD
 	servo([0,0,0,0])
 max_dis = 0
 sum_array=[]
-=======
-	servo(-1,[0,0,0,0])
-max_dis = 0
 
->>>>>>> 56c77ce2adac78074d397908ae14a82d9a8709f9
 for i in range(learning_episodes):
     
     #rd = np.random.randn(8) * 0.3
@@ -225,7 +214,6 @@ a_sorted = sorted(a, key=itemgetter(0),reverse=True)
 
 # print  (a)
 
-<<<<<<< HEAD
 for pp in range(10):
      print(pp)
      sleep(5)
@@ -236,18 +224,7 @@ for pp in range(10):
         #servo(a[len(a)-1][3])
         servo(a_sorted[pp][1][0])
         servo(a_sorted[pp][1][1])
-=======
-# for pp in range(len(a)):
-#     print(pp)
-#     sleep(5)
-#     for p in range(30):
-# 	print(a[pp])
-#         #servo(a[len(a)-1][1])
-#         #servo(a[len(a)-1][2])
-#         #servo(a[len(a)-1][3])
-#         servo(a[pp][1])
-#         servo(a[pp][2])
->>>>>>> 56c77ce2adac78074d397908ae14a82d9a8709f9
+
         #servo(a[0][3])
 
 sleep(3)
