@@ -27,6 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/gpl-3.0.txt>.
 import struct
 import sys
 from gopigo import *
+import threading
 
 #Open the stream of data coming from the mouse
 file = open( "/dev/input/mice", "rb" );
@@ -53,33 +54,39 @@ def getMouseEvent():
 	
 
 flag=0
-print "Press Enter to start"
-a=raw_input()	#Wait for an input to start
+
 set_speed(speed)
 #stop()
-while( 1 ):
-	[l,m,r,x,y]=getMouseEvent()	#Get the inputs from the mouse
-	if debug:
-		print l,m,r,x,y
-	print x,"\t",y
-	
-	#If there is a signinficant mouse movement Up (positive y-axis)
-	if y >20:
-		print("fwd()")	#Move forward
+def getMouseData(idd,results):
 
-	#If there is a signinficant mouse movement Down (negative y-axis)
-	elif y<-20:
-		print("bwd()")	#Move Back
+	a=[0]*4
+	print (threading.currentThread().getName(), 'Starting '+str(idd))
+	while( 1 ):
+        	[l,m,r,x,y]=getMouseEvent() #Get the inputs from the mouse
+        # if debug:
+        #     print l,m,r,x,y
+        # print x,"\t",y
 
-	#If there is a signinficant mouse movement Left (positive x-axis)
-	elif x<-20:
-		print("left()")	#Move left
+        #If there is a signinficant mouse movement Up (positive y-axis)
+        	if y >20:
+            		print("fwd()")  #Move forward
+            		a[0] = a[0]+1
+        #If there is a signinficant mouse movement Down (negative y-axis)
+        	elif y<-20:
+            		print("bwd()")  #Move Back
+            		a[1] = a[1]+1
+        #If there is a signinficant mouse movement Left (positive x-axis)
+        	elif x<-20:
+            		print("left()") #Move left
+           	        a[2] = a[2]+1
+        #If there is a signinficant mouse movement Right (negative x-axis)
+        	elif x>20:
+            		print("right()")    #Move Right
+            		a[3] = a[3]+1
+        	time.sleep(.01)
+		results[idd] = a
+	print (threading.currentThread().getName(), 'Exiting '+str(idd))
 
-	#If there is a signinficant mouse movement Right (negative x-axis)
-	elif x>20:
-		print("right()")	#Move Right
-
-	#Stop the GoPiGo if left mouse button pressed
-	if l:
-		stop()
-	time.sleep(.01)
+t = threading.Thread(name='getMouseDataThread', target=getMouseData,args=(i,results))
+t.start()
+t.join()
