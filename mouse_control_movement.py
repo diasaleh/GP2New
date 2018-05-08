@@ -87,6 +87,6 @@ def getMouseData(idd,results):
 		results[idd] = a
 	print (threading.currentThread().getName(), 'Exiting '+str(idd))
 
-t = threading.Thread(name='getMouseDataThread', target=getMouseData,args=(i,results))
+t = threading.Thread(name='getMouseDataThread', target=getMouseData,args=(0,results))
 t.start()
 t.join()
