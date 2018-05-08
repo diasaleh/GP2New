@@ -54,10 +54,6 @@ def scaling(x):
     return (NewValue)
 
 def getMouseData(idd,results):
-    print "Press Enter to start"
-    a=raw_input()   #Wait for an input to start
-    set_speed(speed)
-    stop()
 	a=[0]*4
 	print (threading.currentThread().getName(), 'Starting '+str(idd))
 	while( 1 ):
