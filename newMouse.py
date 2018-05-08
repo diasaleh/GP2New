@@ -10,7 +10,6 @@ import pickle
 import collections
 from operator import itemgetter
 import random
-from RL_brain import DeepQNetwork
 import numpy as np
 import Adafruit_PCA9685
 import smbus
