@@ -318,6 +318,7 @@ for i in range(50):
     #joint_angles = model.predict(np.array([[-5,-5]]))[0]
     #servo(joint_angles)
 
+sleep(1)
 
 for i in range(50):
         print(str(i))
@@ -327,6 +328,7 @@ for i in range(50):
     #joint_angles = model.predict(np.array([[-5,-5]]))[0]
     #servo(joint_angles)
 
+sleep(1)
 
 for i in range(50):
         print(str(i))
@@ -335,12 +337,44 @@ for i in range(50):
         servo(joint_angles[4:8])
     #joint_angles = model.predict(np.array([[-5,-5]]))[0]
     #servo(joint_angles)
+sleep(1)
 
 for i in range(50):
         print(str(i))
-        joint_angles = model.predict(np.array([[5,5]]))[0]
+        joint_angles = model.predict(np.array([[5.62,5.62]]))[0]
         servo(joint_angles[:4])
-	joint_angles = model.predict(np.array([[-5,-5]]))[0]
+	joint_angles = model.predict(np.array([[-5.94,-5.94]]))[0]
+        servo(joint_angles[:4])
+    #joint_angles = model.predict(np.array([[-5,-5]]))[0]
+    #servo(joint_angles)
+sleep(1)
+
+for i in range(50):
+        print(str(i))
+        joint_angles = model.predict(np.array([[5.62,5.62]]))[0]
+        servo(joint_angles[4:8])
+        joint_angles = model.predict(np.array([[-5.94,-5.94]]))[0]
+        servo(joint_angles[4:8])
+    #joint_angles = model.predict(np.array([[-5,-5]]))[0]
+    #servo(joint_angles)
+sleep(1)
+
+for i in range(50):
+        print(str(i))
+        joint_angles = model.predict(np.array([[5.62,5.62]]))[0]
+	joint_angles = model.predict(np.array([[-5.94,-5.94]]))[0]
+        servo(joint_angles[:4])
+        joint_angles = model.predict(np.array([[5.62,5.62]]))[0]
+        servo(joint_angles[:4])
+    #joint_angles = model.predict(np.array([[-5,-5]]))[0]
+    #servo(joint_angles)
+sleep(1)
+for i in range(50):
+        print(str(i))
+        joint_angles = model.predict(np.array([[5.62,5.62]]))[0]
+        joint_angles = model.predict(np.array([[-5.94,-5.94]]))[0]
+        servo(joint_angles[:4])
+        joint_angles = model.predict(np.array([[5.62,5.62]]))[0]
         servo(joint_angles[:4])
     #joint_angles = model.predict(np.array([[-5,-5]]))[0]
     #servo(joint_angles)
