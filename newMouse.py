@@ -10,30 +10,17 @@ import pickle
 import collections
 from operator import itemgetter
 import random
+from RL_brain import DeepQNetwork
 import numpy as np
 import Adafruit_PCA9685
 import smbus
 import math
 import threading
-def scaling(x):
-    OldMax = 1
-    OldMin = -1
-    NewMax = 600
-    NewMin = 150
-    OldValue = x
-    OldRange = (OldMax - OldMin)
-    if (OldRange == 0):
-        NewValue = NewMin
-    else:
-        NewRange = (NewMax - NewMin)  
-        NewValue = (((OldValue - OldMin) * NewRange) / OldRange) + NewMin
-    return (NewValue)
+
 VID = 0x0
-PID = 0x3825
+PID = 0x538
 DATA_SIZE = 4
-learning_episodes = 5
-exitFlag = [0]*learning_episodes
-results = [None] * learning_episodes
+
 # printina modulio vidurius :for i in dir(usb.util): print i
 
 # try to find Logiceh USB mouse
@@ -59,23 +46,23 @@ endpoint = device[0][(0,0)][0]
 print (endpoint.wMaxPacketSize)
 
 def getMouseData(idd,results):
-	a=[]
-	print (threading.currentThread().getName(), 'Starting '+str(idd))
+    a=[]
+    print (threading.currentThread().getName(), 'Starting '+str(idd))
 
-	data = array.array('B',(0,)*4)
-	while data[0] != 3 and (not exitFlag[idd]):
-	    try:
-	        data = device.read(endpoint.bEndpointAddress, endpoint.wMaxPacketSize)
-	        print (data[2:])
-	        a.append(data[2:])    
-	    
-	    except usb.core.USBError as e:
-	        if e.args == ('Operation timed out',):
-	            print ("timeoutas")
-	            continue
-	results[idd] = a
-	print (threading.currentThread().getName(), 'Exiting '+str(idd))
-	# print ("baigiau! :)")
+    data = array.array('B',(0,)*4)
+    while data[0] != 3 and (not exitFlag[idd]):
+        try:
+            data = device.read(endpoint.bEndpointAddress, endpoint.wMaxPacketSize)
+            print (data[2:])
+            a.append(data[2:])    
+        
+        except usb.core.USBError as e:
+            if e.args == ('Operation timed out',):
+                print ("timeoutas")
+                continue
+    results[idd] = a
+    print (threading.currentThread().getName(), 'Exiting '+str(idd))
+    # print ("baigiau! :)")
  
  
 pwm = Adafruit_PCA9685.PCA9685()
@@ -99,22 +86,25 @@ pwm.set_pwm_freq(60)
 
 print('Moving servo on channel 0, press Ctrl-C to quit...')
 
-def servo(idd,action):
-    print (threading.currentThread().getName(), 'Starting '+str(idd))
+def servo(action):
     print (action)
     action = list(map(scaling,action))
     for i in range(4):
         pwm.set_pwm(i, 0,int( action[i]))
-    sleep(.5)
-    print (threading.currentThread().getName(), 'Exiting '+str(idd))
-    exitFlag[idd] = 1
+    sleep(.1)
+    
 
 
 action_num = 256
 observation_num = 8
 distance_riq = 0
 
-
+def servoControl(idd,test_angles,test_angles2):
+    print (threading.currentThread().getName(), 'Starting '+str(idd))
+    servo(test_angles)
+    servo(test_angles2)
+    print (threading.currentThread().getName(), 'Exiting '+str(idd))
+    exitFlag[idd] = 1
 def sleep(x):
     time.sleep(x)
     
@@ -126,17 +116,21 @@ sleep(1)
 a=[]
 acc=[]
 for o in range(5):
-	print "hy"
-	servo(-1,[0,0,0,0])
+    print "hy"
+    servo([0,0,0,0])
 max_dis = 0
+learning_episodes = 5
+exitFlag = [0]*learning_episodes
+results = [None] * learning_episodes
 
-for i in range(learning_episodes):
-    
+for z in range(learning_episodes):
+    print(z)
     #rd = np.random.randn(8) * 0.3
     #rd[[1,3,5,7]] = 0
     #test_angles = np.clip(s+rd, -1,1)
-    print("\n\n"+str(i)+"\n\n")
+    print("\n\n"+str(z)+"\n\n")
     #for i in np.linspace(0,1,10):
+    
     #    servo((1-i) * last_s + i * test_angles)
     test_angles = np.zeros(4)
     test_angles = np.random.choice([-.25,0,.25],4)
@@ -144,19 +138,19 @@ for i in range(learning_episodes):
    # test_angles3 = np.random.choice([-.25,0,.25],4)
     # pre_distance = distance()
     t = threading.Thread(name='getMouseDataThread', target=getMouseData,args=(i,results))
-    w = threading.Thread(name='servo', target=servo,args=(i,test_angles))
+    w = threading.Thread(name='servoControl', target=servoControl,args=(i,test_angles,test_angles2))
  #    for u in range(4):
  #        servo(test_angles)
-	# sum1 = 0
-	# for t in range(10):
- #        	sum1 += getMotion()
-	# sum1 = sum1/10.0
-	# acc.append(sum1)
+    # sum1 = 0
+    # for t in range(10):
+ #          sum1 += getMotion()
+    # sum1 = sum1/10.0
+    # acc.append(sum1)
  #        servo(test_angles2)
-	# sum2 = 0
- #    	for t in range(10):
+    # sum2 = 0
+ #      for t in range(10):
  #                sum2 += getMotion()
-	# sum2 = sum2/10.0
+    # sum2 = sum2/10.0
  #        acc.append(sum2)
         #servo(test_angles3)
     w.start()
@@ -200,7 +194,7 @@ for i in range(learning_episodes):
 #     print(pp)
 #     sleep(5)
 #     for p in range(30):
-# 	print(a[pp])
+#   print(a[pp])
 #         #servo(a[len(a)-1][1])
 #         #servo(a[len(a)-1][2])
 #         #servo(a[len(a)-1][3])
