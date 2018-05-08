@@ -200,7 +200,7 @@ for i in range(learning_episodes):
 
 with open ('outfileMouse_sum_array', 'rb') as fp:
        sum_array1 = pickle.load(fp)
-
+learning_episodes
 with open ('outfileMouse_a_array', 'rb') as fp:
        a = pickle.load(fp)
 for c in range(len(a)):

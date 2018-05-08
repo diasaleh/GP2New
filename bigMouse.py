@@ -58,7 +58,7 @@ def getMouseData(idd,results):
         # if debug:
         #     print l,m,r,x,y
         # print x,"\t",y
-        
+
         #If there is a signinficant mouse movement Up (positive y-axis)
         if y >20:
             print("fwd()")  #Move forward
