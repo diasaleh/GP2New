@@ -171,10 +171,14 @@ for i in range(learning_episodes):
 	# sum2 = sum2/10.0
  #        acc.append(sum2)
         #servo(test_angles3)
-    w.start()
     t.start()
+    w.start()
+    
     w.join()
     t.join()
+
+    w.exit()
+    t.exit()
     # sum_array.append(np.sum(results[i],axis=0))
     # print(sum_array[i])
     # acc_max = max(acc)
