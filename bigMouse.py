@@ -181,16 +181,13 @@ for i in range(learning_episodes):
 
     w.join()
     t.join()
-
-    w.exit()
-    t.exit()
     # sum_array.append(np.sum(results[i],axis=0))
     # print(sum_array[i])
     # acc_max = max(acc)
     # cur_distance = distance()
     #last_s = test_angles.copy()
     # div_distance = cur_distance - pre_distance
-    a.append([results[i][0],results[i][1],[test_angles,test_angles2]])
+    a.append([results[i][0],results[i][1],results[i][2],[test_angles,test_angles2]])
     # if div_distance > max_dis:
     #     max_dis = div_distance
     #     action1_max = test_angles
@@ -207,7 +204,7 @@ for i in range(learning_episodes):
 
 #with open('outfileMouseBig_results_array_diff', 'wb') as fp:
  # pickle.dump(results, fp)
-with open('outfileMouseBig_a_array_diff_with_R_L', 'wb') as fp:
+with open('outfileMouseBig_a_array_diff_with_R_L_2', 'wb') as fp:
   pickle.dump(a, fp)
 #with open('', 'wb') as fp:
 #   pickle.dump(sum_array, fp)
@@ -216,7 +213,7 @@ with open('outfileMouseBig_a_array_diff_with_R_L', 'wb') as fp:
 #with open ('outfileMouseBig_a_array_diff', 'rb') as fp:
 #        a = pickle.load(fp)
 
-#with open ('outfileMouseBig_a_array_diff', 'rb') as fp:
+#with open ('outfileMouseBig_a_array_diff_with_R_L', 'rb') as fp:
  #       a = pickle.load(fp)
 #for c in range(len(a)):
  #	a[c][0] = sum_array1[c][1]
@@ -244,7 +241,7 @@ for pp in range(10):
         #servo(a[0][3])
 
 sleep(3)
-for pp in range(0):
+for pp in range(10):
     print(pp)
     pp=pp+1
     sleep(5)
