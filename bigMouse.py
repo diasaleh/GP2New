@@ -62,27 +62,21 @@ def getMouseData(idd,results):
         # if debug:
         #     print l,m,r,x,y
         # print x,"\t",y
-
-        #If there is a signinficant mouse movement Up (positive y-axis)
         	if y >20:
-            		print("fwd()")  #Move forward
+            		print("forward")  
             		a[0] = a[0]+y
-        #If there is a signinficant mouse movement Down (negative y-axis)
         	elif y<-20:
-            		print("bwd()")  #Move Back
+            		print("Back")  
             		a[0] = a[0]+y
-        #If there is a signinficant mouse movement Left (positive x-axis)
         	elif x<-20:
-            		print("left()") #Move left
+            		print("left") 
            	        a[1] = a[1]+1
-        #If there is a signinficant mouse movement Right (negative x-axis)
         	elif x>20:
-            		print("right()")    #Move Right
+            		print("right")    
             		a[2] = a[2]+1
         	time.sleep(.01)
 		results[idd] = a
 	print (threading.currentThread().getName(), 'Exiting '+str(idd))
-	# print ("baigiau! :)")
  
  
 pwm = Adafruit_PCA9685.PCA9685()
