@@ -175,16 +175,13 @@ for i in range(learning_episodes):
 
     w.join()
     t.join()
-
-    w.exit()
-    t.exit()
     # sum_array.append(np.sum(results[i],axis=0))
     # print(sum_array[i])
     # acc_max = max(acc)
     # cur_distance = distance()
     #last_s = test_angles.copy()
     # div_distance = cur_distance - pre_distance
-    a.append([results[i][0],results[i][1],[test_angles,test_angles2]])
+    a.append([results[i][0],results[i][1],results[i][2],[test_angles,test_angles2]])
     # if div_distance > max_dis:
     #     max_dis = div_distance
     #     action1_max = test_angles
@@ -201,7 +198,7 @@ for i in range(learning_episodes):
 
 #with open('outfileMouseBig_results_array_diff', 'wb') as fp:
  # pickle.dump(results, fp)
-with open('outfileMouseBig_a_array_diff_with_R_L', 'wb') as fp:
+with open('outfileMouseBig_a_array_diff_with_R_L_2', 'wb') as fp:
   pickle.dump(a, fp)
 #with open('', 'wb') as fp:
 #   pickle.dump(sum_array, fp)
@@ -210,7 +207,7 @@ with open('outfileMouseBig_a_array_diff_with_R_L', 'wb') as fp:
 #with open ('outfileMouseBig_a_array_diff', 'rb') as fp:
 #        a = pickle.load(fp)
 
-#with open ('outfileMouseBig_a_array_diff', 'rb') as fp:
+#with open ('outfileMouseBig_a_array_diff_with_R_L', 'rb') as fp:
  #       a = pickle.load(fp)
 #for c in range(len(a)):
  #	a[c][0] = sum_array1[c][1]
@@ -223,7 +220,7 @@ a_sorted = sorted(a, key=itemgetter(0),reverse=True)
 
 print  (a_sorted)
 
-for pp in range(0):
+for pp in range(10):
      print(pp)
      sleep(5)
      for p in range(40):
@@ -231,8 +228,9 @@ for pp in range(0):
         #servo(a_sorted[len(a_sorted)-1][1])
         #servo(a[len(a)-1][2])
         #servo(a[len(a)-1][3])
-        servo(a_sorted[pp][2][0])
-        servo(a_sorted[pp][2][1])
+
+        servo(a_sorted[pp][3][0])
+        servo(a_sorted[pp][3][1])
 
         #servo(a[0][3])
 
@@ -243,8 +241,9 @@ for pp in range(10):
     sleep(5)
     for p in range(100):
         print(a_sorted[len(a_sorted)-pp])
-        servo(a_sorted[len(a_sorted)-pp][2][0])
-        servo(a_sorted[len(a_sorted)-pp][2][1])
+        servo(a_sorted[len(a_sorted)-pp][3][0])
+        servo(a_sorted[len(a_sorted)-pp][3][1])
+
         # servo(a[len(a)-1][3])
        #  servo(a[0][1])
        #  servo(a[0][2])
