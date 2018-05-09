@@ -220,7 +220,7 @@ a_sorted = sorted(a, key=itemgetter(0),reverse=True)
 
 print  (a_sorted)
 
-for pp in range(0):
+for pp in range(10):
      print(pp)
      sleep(5)
      for p in range(40):
@@ -234,7 +234,7 @@ for pp in range(0):
         #servo(a[0][3])
 
 sleep(3)
-for pp in range(10):
+for pp in range(0):
     print(pp)
     pp=pp+1
     sleep(5)
