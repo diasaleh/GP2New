@@ -237,13 +237,9 @@ for pp in range(10):
         #servo(a_sorted[len(a_sorted)-1][1])
         #servo(a[len(a)-1][2])
         #servo(a[len(a)-1][3])
-<<<<<<< HEAD
+
         servo(a_sorted[pp][3][0])
         servo(a_sorted[pp][3][1])
-=======
-        servo(a_sorted[pp][2][0])
-        servo(a_sorted[pp][2][1])
->>>>>>> 527e0a550c196e38709669e8063b7e6aa2850c25
 
         #servo(a[0][3])
 
@@ -254,13 +250,9 @@ for pp in range(0):
     sleep(5)
     for p in range(100):
         print(a_sorted[len(a_sorted)-pp])
-<<<<<<< HEAD
         servo(a_sorted[len(a_sorted)-pp][3][0])
         servo(a_sorted[len(a_sorted)-pp][3][1])
-=======
-        servo(a_sorted[len(a_sorted)-pp][2][0])
-        servo(a_sorted[len(a_sorted)-pp][2][1])
->>>>>>> 527e0a550c196e38709669e8063b7e6aa2850c25
+
         # servo(a[len(a)-1][3])
        #  servo(a[0][1])
        #  servo(a[0][2])
