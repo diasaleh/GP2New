@@ -198,8 +198,8 @@ for i in range(learning_episodes):
 
 #with open('outfileMouseBig_results_array_diff', 'wb') as fp:
  # pickle.dump(results, fp)
-with open('outfileMouseBig_a_array_diff_with_R_L_2', 'wb') as fp:
-  pickle.dump(a, fp)
+#with open('outfileMouseBig_a_array_diff_with_R_L_2', 'wb') as fp:
+ # pickle.dump(a, fp)
 #with open('', 'wb') as fp:
 #   pickle.dump(sum_array, fp)
 #print (sum_array)
@@ -207,8 +207,8 @@ with open('outfileMouseBig_a_array_diff_with_R_L_2', 'wb') as fp:
 #with open ('outfileMouseBig_a_array_diff', 'rb') as fp:
 #        a = pickle.load(fp)
 
-#with open ('outfileMouseBig_a_array_diff_with_R_L', 'rb') as fp:
- #       a = pickle.load(fp)
+with open ('outfileMouseBig_a_array_diff_with_R_L_2', 'rb') as fp:
+        a = pickle.load(fp)
 #for c in range(len(a)):
  #	a[c][0] = sum_array1[c][1]
 a_sorted = sorted(a, key=itemgetter(0),reverse=True)
@@ -220,7 +220,7 @@ a_sorted = sorted(a, key=itemgetter(0),reverse=True)
 
 print  (a_sorted)
 
-for pp in range(10):
+for pp in range(1):
      print(pp)
      sleep(5)
      for p in range(40):
@@ -235,7 +235,7 @@ for pp in range(10):
         #servo(a[0][3])
 
 sleep(3)
-for pp in range(10):
+for pp in range(4):
     print(pp)
     pp=pp+1
     sleep(5)
