@@ -64,6 +64,7 @@ def getMouseData(idd, results):
 	print (threading.currentThread().getName(), 'Starting '+str(idd))
 	while( not exitFlag[idd] ):
         	[l,m,r,x,y]=getMouseEvent() #Get the inputs from the mouse
+#		print("getMouseData")
         # if debug:
         #     print l,m,r,x,y
         # print x,"\t",y
@@ -145,17 +146,17 @@ def learningLoop(learning_episodes):
         a.append([results[i][0],results[i][1],[test_angles,test_angles2]])
 
         servo([0,0,0,0])   
-        sleep(.5)
+        sleep(1)
     return a
 
 learning_episodes = 100
 exitFlag = [0]*learning_episodes
 results = [None] * learning_episodes
 
-a = learningLoop(learning_episodes)
+#a = learningLoop(learning_episodes)
 
-writeToFile(a,'outfileMouseBig_results_array_diff')
-
+#writeToFile(a,'Test3_withSelecon_115')
+a = loadFromFile('Test3_withSelecon_115')
 a_sorted = sorted(a, key=itemgetter(0),reverse=True)
 a_sorted_2 = sorted(a, key=itemgetter(1),reverse=True)
 print  (a_sorted)
@@ -168,7 +169,7 @@ print  ("forward")
 print  (forward)
 
 Back = a_sorted[-5:]
-Back = sorted(forward, key=itemgetter(1))
+Back = sorted(Back, key=itemgetter(1))
 
 print  ("Back")
 print  (Back)
@@ -187,36 +188,40 @@ print  (right)
 ###############################################
 print  ("forward")
 sleep(3)
-for pp in range(5):
+for pp in range(0):
+    print  ("forward")
     for p in range(40):
         print(forward[pp])
-        servo(forward[pp][3][0])
-        servo(forward[pp][3][1])
+        servo(forward[pp][2][0])
+        servo(forward[pp][2][1])
     sleep(1)
 
 print  ("Back")
 sleep(3)
-for pp in range(5):
+for pp in range(0):
+    print  ("Back")
     for p in range(40):
         print(Back[pp])
-        servo(Back[pp][3][0])
-        servo(Back[pp][3][1])
-
+        servo(Back[pp][2][0])
+        servo(Back[pp][2][1])
+    sleep(1)
 print  ("right")
 sleep(3)
-for pp in range(5):
+for pp in range(2):
+    print  ("right")
     for p in range(40):
         print(right[pp])
-        servo(right[pp][3][0])b
-        servo(right[pp][3][1])
+        servo(right[pp][2][0])
+        servo(right[pp][2][1])
     sleep(1)
 print  ("left")
 sleep(3)
 for pp in range(5):
+    print  ("left")
     for p in range(40):
         print(left[pp])
-        servo(left[pp][3][0])
-        servo(left[pp][3][1])
+        servo(left[pp][2][0])
+        servo(left[pp][2][1])
     sleep(1)
 
 # t = threading.Thread(name='getMouseDataThread', target=getMouseData,args=(i,results))
