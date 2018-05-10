@@ -69,16 +69,16 @@ def getMouseData(idd, results):
         #     print l,m,r,x,y
         # print x,"\t",y
         	if y >20:
-            		print("forward")  
+            		#print("forward")  
             		a[0] = a[0]+y
         	elif y<-20:
-            		print("Back")  
+            		#print("Back")  
             		a[0] = a[0]+y
         	elif x<-20:
-            		print("left") 
+            		#print("left") 
            	        a[1] = a[1]+1
         	elif x>20:
-            		print("right")    
+            		#print("right")    
             		a[1] = a[1]+1
         	time.sleep(.01)
 		results[idd] = a
@@ -188,9 +188,9 @@ print  (right)
 ###############################################
 print  ("forward")
 sleep(3)
-for pp in range(1):
+for pp in range(0):
     print  ("forward")
-    for p in range(40):
+    for p in range(10):
         print(forward[pp])
         servo(forward[pp][2][0])
         servo(forward[pp][2][1])
@@ -223,15 +223,17 @@ for pp in range(1):
 #         servo(left[pp][2][0])
 #         servo(left[pp][2][1])
 #     sleep(1)
+newResults = [None] * 100
 for i in range(100):
-    print(forward[0])
-    t = threading.Thread(name='getMouseDataThread', target=getMouseData,args=(1,results))
-    w = threading.Thread(name='servoControlLoop', target=servoControl,args=(1,forward[0][2][0],forward[0][2][1]))
+    
+    t = threading.Thread(name='getMouseDataThread', target=getMouseData,args=(i,newResults))
+    w = threading.Thread(name='servoControlLoop', target=servoControl,args=(i,forward[0][2][0],forward[0][2][1]))
 
     t.start()
     w.start()
     w.join()
     t.join()
-    print(results[i][0])
+    print("\n")
+    print(newResults[i][0])
 
 
