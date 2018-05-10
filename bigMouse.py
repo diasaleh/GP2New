@@ -104,8 +104,8 @@ def servo(action):
 def servoControl(idd,test_angles,test_angles2):
     print (threading.currentThread().getName(), 'Starting '+str(idd))
     for u in range(4):
-	servo(test_angles)
-    	servo(test_angles2)
+    	servo(test_angles)
+        servo(test_angles2)
     print (threading.currentThread().getName(), 'Exiting '+str(idd))
     exitFlag[idd] = 1
     
@@ -157,7 +157,9 @@ a = learningLoop(learning_episodes)
 writeToFile(a,'outfileMouseBig_results_array_diff')
 
 a_sorted = sorted(a, key=itemgetter(0),reverse=True)
+a_sorted_2 = sorted(a, key=itemgetter(1),reverse=True)
 print  (a_sorted)
+print  (a_sorted_2)
 
 forward = a_sorted[:5]
 forward = sorted(forward, key=itemgetter(1))
@@ -171,14 +173,58 @@ Back = sorted(forward, key=itemgetter(1))
 print  ("Back")
 print  (Back)
 
+left = a_sorted_2[-5:]
+left = sorted(left, key=itemgetter(0))
+
+print  ("left")
+print  (left)
+
+right = a_sorted_2[:5]
+right = sorted(right, key=itemgetter(0))
+
+print  ("right")
+print  (right)
+###############################################
+print  ("forward")
+sleep(3)
 for pp in range(5):
     for p in range(40):
         print(forward[pp])
         servo(forward[pp][3][0])
         servo(forward[pp][3][1])
+    sleep(1)
+
+print  ("Back")
+sleep(3)
 for pp in range(5):
     for p in range(40):
         print(Back[pp])
         servo(Back[pp][3][0])
         servo(Back[pp][3][1])
+
+print  ("right")
+sleep(3)
+for pp in range(5):
+    for p in range(40):
+        print(right[pp])
+        servo(right[pp][3][0])b
+        servo(right[pp][3][1])
+    sleep(1)
+print  ("left")
+sleep(3)
+for pp in range(5):
+    for p in range(40):
+        print(left[pp])
+        servo(left[pp][3][0])
+        servo(left[pp][3][1])
+    sleep(1)
+
+# t = threading.Thread(name='getMouseDataThread', target=getMouseData,args=(i,results))
+# w = threading.Thread(name='servoControlLoop', target=servoControl,args=(i,test_angles,test_angles2))
+
+# t.start()
+# w.start()
+# w.join()
+# t.join()
+
 
