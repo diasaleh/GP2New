@@ -188,7 +188,7 @@ print  (right)
 ###############################################
 print  ("forward")
 sleep(3)
-for pp in range(0):
+for pp in range(1):
     print  ("forward")
     for p in range(40):
         print(forward[pp])
@@ -196,40 +196,42 @@ for pp in range(0):
         servo(forward[pp][2][1])
     sleep(1)
 
-print  ("Back")
-sleep(3)
-for pp in range(0):
-    print  ("Back")
-    for p in range(40):
-        print(Back[pp])
-        servo(Back[pp][2][0])
-        servo(Back[pp][2][1])
-    sleep(1)
-print  ("right")
-sleep(3)
-for pp in range(2):
-    print  ("right")
-    for p in range(40):
-        print(right[pp])
-        servo(right[pp][2][0])
-        servo(right[pp][2][1])
-    sleep(1)
-print  ("left")
-sleep(3)
-for pp in range(5):
-    print  ("left")
-    for p in range(40):
-        print(left[pp])
-        servo(left[pp][2][0])
-        servo(left[pp][2][1])
-    sleep(1)
+# print  ("Back")
+# sleep(3)
+# for pp in range(0):
+#     print  ("Back")
+#     for p in range(40):
+#         print(Back[pp])
+#         servo(Back[pp][2][0])
+#         servo(Back[pp][2][1])
+#     sleep(1)
+# print  ("right")
+# sleep(3)
+# for pp in range(2):
+#     print  ("right")
+#     for p in range(40):
+#         print(right[pp])
+#         servo(right[pp][2][0])
+#         servo(right[pp][2][1])
+#     sleep(1)
+# print  ("left")
+# sleep(3)
+# for pp in range(5):
+#     print  ("left")
+#     for p in range(40):
+#         print(left[pp])
+#         servo(left[pp][2][0])
+#         servo(left[pp][2][1])
+#     sleep(1)
+for i in range(100):
+    print(forward[0])
+    t = threading.Thread(name='getMouseDataThread', target=getMouseData,args=(1,results))
+    w = threading.Thread(name='servoControlLoop', target=servoControl,args=(1,forward[0][2][0],forward[0][2][1]))
 
-# t = threading.Thread(name='getMouseDataThread', target=getMouseData,args=(i,results))
-# w = threading.Thread(name='servoControlLoop', target=servoControl,args=(i,test_angles,test_angles2))
-
-# t.start()
-# w.start()
-# w.join()
-# t.join()
+    t.start()
+    w.start()
+    w.join()
+    t.join()
+    print(results[i][0])
 
 
