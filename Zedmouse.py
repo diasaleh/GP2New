@@ -223,7 +223,9 @@ for pp in range(0):
 #         servo(left[pp][2][0])
 #         servo(left[pp][2][1])
 #     sleep(1)
+errorCounter = 0
 newResults = [None] * 100
+last_error_i = 0
 for i in range(100):
     
     t = threading.Thread(name='getMouseDataThread', target=getMouseData,args=(i,newResults))
@@ -235,5 +237,8 @@ for i in range(100):
     t.join()
     print("\n")
     print(newResults[i][0])
-
+    if newResults[i][0] < forward[0][0]:
+        errorCounter = errorCounter + 1
+    if errorCounter > 3:
+        print "error"
 
