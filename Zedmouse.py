@@ -155,8 +155,8 @@ results = [None] * learning_episodes
 
 #a = learningLoop(learning_episodes)
 
-#writeToFile(a,'Test3_withSelecon_115')
-a = loadFromFile('Test3_withSelecon_115')
+#writeToFile(a,'Test_1motorDown_115')
+a = loadFromFile('Test_1motorDown_115')
 a_sorted = sorted(a, key=itemgetter(0),reverse=True)
 a_sorted_2 = sorted(a, key=itemgetter(1),reverse=True)
 print  (a_sorted)
@@ -188,41 +188,41 @@ print  (right)
 ###############################################
 print  ("forward")
 sleep(3)
-for pp in range(0):
+for pp in range(3):
     print  ("forward")
-    for p in range(10):
+    for p in range(40):
         print(forward[pp])
         servo(forward[pp][2][0])
         servo(forward[pp][2][1])
     sleep(1)
 
-# print  ("Back")
-# sleep(3)
-# for pp in range(0):
-#     print  ("Back")
-#     for p in range(40):
-#         print(Back[pp])
-#         servo(Back[pp][2][0])
-#         servo(Back[pp][2][1])
-#     sleep(1)
-# print  ("right")
-# sleep(3)
-# for pp in range(2):
-#     print  ("right")
-#     for p in range(40):
-#         print(right[pp])
-#         servo(right[pp][2][0])
-#         servo(right[pp][2][1])
-#     sleep(1)
-# print  ("left")
-# sleep(3)
-# for pp in range(5):
-#     print  ("left")
-#     for p in range(40):
-#         print(left[pp])
-#         servo(left[pp][2][0])
-#         servo(left[pp][2][1])
-#     sleep(1)
+print  ("Back")
+sleep(3)
+for pp in range(3):
+     print  ("Back")
+     for p in range(40):
+         print(Back[pp])
+         servo(Back[pp][2][0])
+         servo(Back[pp][2][1])
+     sleep(1)
+print  ("right")
+sleep(3)
+for pp in range(3):
+     print  ("right")
+     for p in range(40):
+         print(right[pp])
+         servo(right[pp][2][0])
+         servo(right[pp][2][1])
+     sleep(1)
+print  ("left")
+sleep(3)
+for pp in range(3):
+     print  ("left")
+     for p in range(40):
+         print(left[pp])
+         servo(left[pp][2][0])
+         servo(left[pp][2][1])
+     sleep(1)
 newResults = [None] * 100
 for i in range(100):
     
