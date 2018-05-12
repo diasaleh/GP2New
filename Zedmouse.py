@@ -155,8 +155,8 @@ results = [None] * learning_episodes
 
 #a = learningLoop(learning_episodes)
 
-#writeToFile(a,'Test3_withSelecon_115')
-a = loadFromFile('Test3_withSelecon_115')
+#writeToFile(a,'Test_1motorDown_115')
+a = loadFromFile('Test_1motorDown_115')
 a_sorted = sorted(a, key=itemgetter(0),reverse=True)
 a_sorted_2 = sorted(a, key=itemgetter(1),reverse=True)
 print  (a_sorted)
@@ -188,45 +188,47 @@ print  (right)
 ###############################################
 print  ("forward")
 sleep(3)
-for pp in range(0):
+for pp in range(3):
     print  ("forward")
-    for p in range(10):
+    for p in range(40):
         print(forward[pp])
         servo(forward[pp][2][0])
         servo(forward[pp][2][1])
     sleep(1)
 
-# print  ("Back")
-# sleep(3)
-# for pp in range(0):
-#     print  ("Back")
-#     for p in range(40):
-#         print(Back[pp])
-#         servo(Back[pp][2][0])
-#         servo(Back[pp][2][1])
-#     sleep(1)
-# print  ("right")
-# sleep(3)
-# for pp in range(2):
-#     print  ("right")
-#     for p in range(40):
-#         print(right[pp])
-#         servo(right[pp][2][0])
-#         servo(right[pp][2][1])
-#     sleep(1)
-# print  ("left")
-# sleep(3)
-# for pp in range(5):
-#     print  ("left")
-#     for p in range(40):
-#         print(left[pp])
-#         servo(left[pp][2][0])
-#         servo(left[pp][2][1])
-#     sleep(1)
+print  ("Back")
+sleep(3)
+for pp in range(0):
+    print  ("Back")
+    for p in range(40):
+        print(Back[pp])
+        servo(Back[pp][2][0])
+        servo(Back[pp][2][1])
+    sleep(1)
+print  ("right")
+sleep(3)
+for pp in range(2):
+    print  ("right")
+    for p in range(40):
+        print(right[pp])
+        servo(right[pp][2][0])
+        servo(right[pp][2][1])
+    sleep(1)
+print  ("left")
+sleep(3)
+for pp in range(5):
+    print  ("left")
+    for p in range(40):
+        print(left[pp])
+        servo(left[pp][2][0])
+        servo(left[pp][2][1])
+    sleep(1)
 errorCounter = 0
-newResults = [None] * 100
+
+newResults = [None] * 10
 last_error_i = 0
-for i in range(100):
+i=0
+while True:
     
     t = threading.Thread(name='getMouseDataThread', target=getMouseData,args=(i,newResults))
     w = threading.Thread(name='servoControlLoop', target=servoControl,args=(i,forward[0][2][0],forward[0][2][1]))
@@ -234,11 +236,22 @@ for i in range(100):
     t.start()
     w.start()
     w.join()
-    t.join()
-    print("\n")
-    print(newResults[i][0])
-    if newResults[i][0] < forward[0][0]:
-        errorCounter = errorCounter + 1
-    if errorCounter > 3:
-        print "error"
+    t.join()    
+
+    i=i+1
+    if i > 9:
+        print(newResults)
+        a = np.array(newResults)
+        avgDistance = a.mean(axis=0) 
+        if avgDistance < forward[0][0]:
+            a = learningLoop(learning_episodes)
+            a_sorted = sorted(a, key=itemgetter(0),reverse=True)
+            print  (a_sorted)
+            forward = a_sorted[:5]
+            forward = sorted(forward, key=itemgetter(1))
+            print  (forward)
+
+        i=0
+
+
 
