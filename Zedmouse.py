@@ -18,6 +18,8 @@ import smbus
 import math
 import threading
 
+
+
 servo_min = 150  
 servo_max = 500  
 servo_mid = 400
