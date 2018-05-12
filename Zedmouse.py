@@ -19,7 +19,7 @@ import math
 import threading
 
 
-
+servo_num = 8
 servo_min = 150  
 servo_max = 500  
 servo_mid = 400
@@ -106,7 +106,7 @@ def servo(action):
 
 def servoControl(idd,test_angles,test_angles2):
     print (threading.currentThread().getName(), 'Starting '+str(idd))
-    for u in range(4):
+    for u in range(servo_num):
     	servo(test_angles)
         servo(test_angles2)
     print (threading.currentThread().getName(), 'Exiting '+str(idd))
@@ -129,11 +129,11 @@ def learningLoop(learning_episodes):
     i=0
     for i in range(learning_episodes):
         print("\n\n"+str(i)+"\n\n")
-        test_angles = np.zeros(4)
-        test_angles2 = np.zeros(4)
-        test_angles = np.random.choice([-.25,0,.25],4)
+        test_angles = np.zeros(servo_num)
+        test_angles2 = np.zeros(servo_num)
+        test_angles = np.random.choice([-.25,0,.25],servo_num)
 
-        for v in range(4):
+        for v in range(servo_num):
             test_angles2[v]=np.random.choice([-.25,0,.25],1)
             while test_angles2[v] == test_angles[v]:
                 test_angles2[v]=np.random.choice([-.25,0,.25],1)
@@ -148,7 +148,7 @@ def learningLoop(learning_episodes):
 	print(results)
         a.append([results[i][0],results[i][1],[test_angles,test_angles2]])
 
-        servo([0,0,0,0])   
+        servo([0,0,0,0,0,0,0,0])   
         sleep(.1)
     return a
 
