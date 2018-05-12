@@ -76,10 +76,10 @@ def getMouseData(idd, results):
             		a[0] = a[0]+y
         	elif x<-20:
             		#print("left") 
-           	        a[1] = a[1]+1
+           	        a[1] = a[1]+x
         	elif x>20:
             		#print("right")    
-            		a[1] = a[1]+1
+            		a[1] = a[1]+x
         	time.sleep(.01)
 		results[idd] = a
 	print (threading.currentThread().getName(), 'Exiting '+str(idd))
