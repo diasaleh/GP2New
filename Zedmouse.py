@@ -50,6 +50,7 @@ def scaling(x):
     OldMax = 1
     OldMin = -1
     NewMax = 600
+
     NewMin = 150
     OldValue = x
     OldRange = (OldMax - OldMin)
