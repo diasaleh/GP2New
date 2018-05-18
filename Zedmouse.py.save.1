@@ -102,7 +102,7 @@ def servo(action):
     action = list(map(scaling,action))
     for i in range(8):
         pwm.set_pwm(i, 0,int( action[i]))
-    sleep(.2)
+    sleep(.1)
 
 def servoControl(idd,test_angles,test_angles2):
     print (threading.currentThread().getName(), 'Starting '+str(idd))
@@ -127,7 +127,6 @@ def loadFromFile(filename):
 def learningLoop(learning_episodes):
     a = []
     i=0
-    print("VVV")
     for i in range(learning_episodes):
         print("\n\n"+str(i)+"\n\n")
         test_angles = np.zeros(servo_num)
@@ -151,21 +150,17 @@ def learningLoop(learning_episodes):
 
         servo([0,0,0,0,0,0,0,0])   
         sleep(.1)
-	if i % 5==0:
-		sleep(2)
     return a
 
 learning_episodes = 100
 exitFlag = [0]*learning_episodes
 results = [None] * learning_episodes
-#while True:
-#	servo([0,0,0,0,0,0,0,0])
-#	servo([ 0,    0,    0.25 , 0.25 , 0.,   -0.25,  0. ,   0.  ])
-#	servo([ 0.25, -0.25, -0.25 , 0.  , -0.25 , 0.  , -0.25, -0.25])
-#a = learningLoop(learning_episodes)
+while True:
 
-#writeToFile(a,'8servo_Test2')
-a = loadFromFile('8servo_Test2')
+a = learningLoop(learning_episodes)
+
+writeToFile(a,'Test_3_125')
+#a = loadFromFile('Test_2_125')
 a_sorted = sorted(a, key=itemgetter(0),reverse=True)
 a_sorted_2 = sorted(a, key=itemgetter(1),reverse=True)
 print  (a_sorted)
@@ -197,17 +192,17 @@ print  (right)
 ###############################################
 print  ("forward")
 #sleep(3)
-for pp in range(6):
+for pp in range(0):
     print  ("forward")
     for p in range(40):
-        print(forward[pp+6])
-        servo(forward[pp+6][2][0])
-        servo(forward[pp+6][2][1])
+        print(forward[pp])
+        servo(forward[pp][2][0])
+        servo(forward[pp][2][1])
     sleep(1)
 
 print  ("Back")
 #sleep(3)
-for pp in range(5):
+for pp in range(0):
     print  ("Back")
     for p in range(40):
         print(Back[pp])
@@ -216,7 +211,7 @@ for pp in range(5):
     sleep(1)
 print  ("right")
 #sleep(3)
-for pp in range(5):
+for pp in range(0):
     print  ("right")
     for p in range(40):
         print(right[pp])
@@ -225,7 +220,7 @@ for pp in range(5):
     sleep(1)
 print  ("left")
 #sleep(3)
-for pp in range(5):
+for pp in range(0):
     print  ("left")
     for p in range(40):
         print(left[pp])
