@@ -158,24 +158,24 @@ def learningLoop(learning_episodes):
 		sleep(2)
     return a
 
-learning_episodes = 30
+learning_episodes = 200
 exitFlag = [0]*learning_episodes
 results = [None] * learning_episodes
 #while True:
 #	servo([0,0,0,0,0,0,0,0])
 #	servo([ 0,    0,    0.25 , 0.25 , 0.,   -0.25,  0. ,   0.  ])
 #	servo([ 0.25, -0.25, -0.25 , 0.  , -0.25 , 0.  , -0.25, -0.25])
-a = learningLoop(learning_episodes)
+#a = learningLoop(learning_episodes)
 
-writeToFile(a,'8servo_Test5')
-#a = loadFromFile('8servo_Test5')
+#writeToFile(a,'8servo_Test7')
+a = loadFromFile('8servo_Test7')
 a_sorted = sorted(a, key=itemgetter(0),reverse=True)
-a_sorted_2 = sorted(a, key=itemgetter(2),reverse=True)
+a_sorted_2 = sorted(a, key=itemgetter(1),reverse=True)
 print  (a_sorted)
 print  (a_sorted_2)
 
 forward = a_sorted[:15]
-forward = sorted(forward,key=lambda row: np.abs(row[2]))
+forward = sorted(forward,key=lambda row: np.abs(row[1]))
 
 print  ("forward")
 print  (forward)
@@ -275,6 +275,7 @@ while True:
             print  (forward)
 
         i=0
+
 
 
 
