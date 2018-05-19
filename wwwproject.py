@@ -178,13 +178,13 @@ print  (a_sorted)
 print  (a_sorted_2)
 
 forward = a_sorted[:5]
-forward = sorted(forward,key=lambda row: np.abs(row[2]))
+forward = sorted(forward,key=lambda row: np.abs(row[1]))
 
 print  ("forward")
 print  (forward)
 
 Back = a_sorted[-5:]
-Back = sorted(Back,key=lambda row: np.abs(row[2]))
+Back = sorted(Back,key=lambda row: np.abs(row[1]))
 
 print  ("Back")
 print  (Back)
@@ -269,8 +269,8 @@ while True:
         if ((avgFB[0]+400) < forward[0][0]) or (abs(avgFB[1])-50 > forward[0][1]):
 	    print(avgFB[0]+100)
 	    print("learing again")
-            a = learningLoop(learning_episodes)
-	    writeToFile(a,'Test_2_125')
+            a = learningLoop(100)
+	    writeToFile(a,'8servo_Test9_again')
             a_sorted = sorted(a, key=itemgetter(0),reverse=True)
             print  (a_sorted)
             forward = a_sorted[:5]
