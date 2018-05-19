@@ -109,6 +109,7 @@ def servo(action):
 
 def servoControl(idd,test_angles,test_angles2):
     print (threading.currentThread().getName(), 'Starting '+str(idd))
+
     for u in range(servo_num):
     	servo(test_angles)
         servo(test_angles2)
@@ -133,16 +134,25 @@ def learningLoop(learning_episodes):
     print("VVV")
     for i in range(learning_episodes):
         print("\n\n"+str(i)+"\n\n")
-        test_angles = np.zeros(servo_num)
+        test_angles = np.array(comp[i])
+        #test_angles = np.zeros(servo_num)
         test_angles2 = np.zeros(servo_num)
-        test_angles = np.random.choice([-.15,.15],servo_num)
+        #test_angles = np.random.choice([-.15,.15],servo_num)
    #     test_angles2 = np.random.choice([-.25,0,.25],servo_num)
 
         for v in range(servo_num):
-            test_angles2[v]=np.random.choice([-.15,.15],1)
-            while test_angles2[v] == test_angles[v]:
-                test_angles2[v]=np.random.choice([-.15,.15],1)
-
+            test_angles2[v]=not (test_angles[v])
+            # while test_angles2[v] == test_angles[v]:
+            #     test_angles2[v]=np.random.choice([-.15,.15],1)
+        for v in range(servo_num):
+            if test_angles2[v] == 0:
+                test_angles2[v] = .15
+            if test_angles2[v] == 1:
+                test_angles2[v] = -.15
+            if test_angles[v] == 0:
+                test_angles[v] = .15
+            if test_angles[v] == 1:
+                test_angles[v] = -.15
         t = threading.Thread(name='getMouseDataThread', target=getMouseData,args=(i,results))
         w = threading.Thread(name='servoControl', target=servoControl,args=(i,test_angles,test_angles2))
 
@@ -160,9 +170,10 @@ def learningLoop(learning_episodes):
 		sleep(2)
     return a
 
-learning_episodes = 100
+learning_episodes = 256
 exitFlag = [0]*learning_episodes
 results = [None] * learning_episodes
+comp = np.c_[tuple(i.ravel() for i in np.mgrid[:2,:2,:2,:2,:2,:2,:2,:2])]
 #while True:
 #	servo([0,0,0,0,0,0,0,0])
 #        servo([ 0.25,  0.25,0.25 ,0.25 ,  0.25,   0.25,   0.25 ,    0.25  ])
