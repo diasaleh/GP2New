@@ -136,6 +136,7 @@ def learningLoop(learning_episodes):
         test_angles = np.zeros(servo_num)
         test_angles2 = np.zeros(servo_num)
         test_angles = np.random.choice([-.25,0,.25],servo_num)
+   #     test_angles2 = np.random.choice([-.25,0,.25],servo_num)
 
         for v in range(servo_num):
             test_angles2[v]=np.random.choice([-.25,0,.25],1)
@@ -151,42 +152,39 @@ def learningLoop(learning_episodes):
         t.join()
 	print(results)
         a.append([results[i][0],results[i][1],results[i][2],[test_angles,test_angles2]])
-
-        servo([0,0,0,0,0,0,0,0])   
-        sleep(.1)
+#	servo([0,0,0,0,0,0,0,0])   
+#	servo([0,0,0,0,0,0,0,0])   
+#	servo([0,0,0,0,0,0,0,0])   
+       	sleep(.2)
 	if i % 5==0:
 		sleep(2)
     return a
 
-learning_episodes = 30
+learning_episodes = 300
 exitFlag = [0]*learning_episodes
 results = [None] * learning_episodes
 #while True:
 #	servo([0,0,0,0,0,0,0,0])
-#	servo([ 0,    0,    0.25 , 0.25 , 0.,   -0.25,  0. ,   0.  ])
+#        servo([ 0.25,  0.25,0.25 ,0.25 ,  0.25,   0.25,   0.25 ,    0.25  ])
+#	servo([ -0.25,   - 0.25,    -0.25 ,- 0.25 ,  -0.25,   -0.25,   -0.25 ,    -0.25  ])
 #	servo([ 0.25, -0.25, -0.25 , 0.  , -0.25 , 0.  , -0.25, -0.25])
-a = learningLoop(learning_episodes)
+#a = learningLoop(learning_episodes)
 
-<<<<<<< HEAD
-writeToFile(a,'8servo_Test6')
-#a = loadFromFile('8servo_Test6')
-=======
-writeToFile(a,'8servo_Test5')
-#a = loadFromFile('8servo_Test5')
->>>>>>> f45ab7a297180cf25ef75540d529ff8c8371e2df
+#writeToFile(a,'8servo_Test9')
+a = loadFromFile('8servo_Test9')
 a_sorted = sorted(a, key=itemgetter(0),reverse=True)
-a_sorted_2 = sorted(a, key=itemgetter(2),reverse=True)
+a_sorted_2 = sorted(a, key=itemgetter(1),reverse=True)
 print  (a_sorted)
 print  (a_sorted_2)
 
-forward = a_sorted[:15]
+forward = a_sorted[:5]
 forward = sorted(forward,key=lambda row: np.abs(row[2]))
 
 print  ("forward")
 print  (forward)
 
 Back = a_sorted[-5:]
-Back = sorted(Back,key=lambda row: np.abs(row[1]))
+Back = sorted(Back,key=lambda row: np.abs(row[2]))
 
 print  ("Back")
 print  (Back)
@@ -205,9 +203,9 @@ print  (right)
 ###############################################
 print  ("forward")
 #sleep(3)
-for pp in range(6):
+for pp in range(0):
     print  ("forward")
-    for p in range(40):
+    for p in range(100):
         print(forward[pp])
         servo(forward[pp][3][0])
         servo(forward[pp][3][1])
@@ -215,30 +213,30 @@ for pp in range(6):
 
 print  ("Back")
 #sleep(3)
-for pp in range(5):
+for pp in range(0):
     print  ("Back")
     for p in range(40):
         print(Back[pp])
-        servo(Back[pp][2][0])
-        servo(Back[pp][2][1])
+        servo(Back[pp][3][0])
+        servo(Back[pp][3][1])
     sleep(1)
 print  ("right")
 #sleep(3)
-for pp in range(5):
+for pp in range(0):
     print  ("right")
     for p in range(40):
         print(right[pp])
-        servo(right[pp][2][0])
-        servo(right[pp][2][1])
+        servo(right[pp][3][0])
+        servo(right[pp][3][1])
     sleep(1)
 print  ("left")
 #sleep(3)
-for pp in range(5):
+for pp in range(0):
     print  ("left")
     for p in range(40):
         print(left[pp])
-        servo(left[pp][2][0])
-        servo(left[pp][2][1])
+        servo(left[pp][3][0])
+        servo(left[pp][3][1])
     sleep(1)
 errorCounter = 0
 
@@ -248,7 +246,7 @@ i=0
 while True:
     
     t = threading.Thread(name='getMouseDataThread', target=getMouseData,args=(i,results))
-    w = threading.Thread(name='servoControlLoop', target=servoControl,args=(i,forward[0][2][0],forward[0][2][1]))
+    w = threading.Thread(name='servoControlLoop', target=servoControl,args=(i,forward[0][3][0],forward[0][3][1]))
 
     t.start()
     w.start()
@@ -280,6 +278,7 @@ while True:
             print  (forward)
 
         i=0
+
 
 
 
