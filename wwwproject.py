@@ -135,13 +135,13 @@ def learningLoop(learning_episodes):
         print("\n\n"+str(i)+"\n\n")
         test_angles = np.zeros(servo_num)
         test_angles2 = np.zeros(servo_num)
-        test_angles = np.random.choice([-.25,0,.25],servo_num)
+        test_angles = np.random.choice([-.15,.15],servo_num)
    #     test_angles2 = np.random.choice([-.25,0,.25],servo_num)
 
         for v in range(servo_num):
-            test_angles2[v]=np.random.choice([-.25,0,.25],1)
+            test_angles2[v]=np.random.choice([-.15,.15],1)
             while test_angles2[v] == test_angles[v]:
-                test_angles2[v]=np.random.choice([-.25,0,.25],1)
+                test_angles2[v]=np.random.choice([-.15,.15],1)
 
         t = threading.Thread(name='getMouseDataThread', target=getMouseData,args=(i,results))
         w = threading.Thread(name='servoControl', target=servoControl,args=(i,test_angles,test_angles2))
@@ -160,7 +160,7 @@ def learningLoop(learning_episodes):
 		sleep(2)
     return a
 
-learning_episodes = 300
+learning_episodes = 100
 exitFlag = [0]*learning_episodes
 results = [None] * learning_episodes
 #while True:
