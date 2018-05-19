@@ -18,8 +18,6 @@ import smbus
 import math
 import threading
 
-
-servo_num = 8
 servo_min = 150  
 servo_max = 500  
 servo_mid = 400
@@ -50,7 +48,6 @@ def scaling(x):
     OldMax = 1
     OldMin = -1
     NewMax = 600
-
     NewMin = 150
     OldValue = x
     OldRange = (OldMax - OldMin)
@@ -63,7 +60,7 @@ def scaling(x):
 
 def getMouseData(idd, results):
 
-	a=[0]*3
+	a=[0]*2
 	print (threading.currentThread().getName(), 'Starting '+str(idd))
 	while( not exitFlag[idd] ):
         	[l,m,r,x,y]=getMouseEvent() #Get the inputs from the mouse
@@ -79,12 +76,10 @@ def getMouseData(idd, results):
             		a[0] = a[0]+y
         	elif x<-20:
             		#print("left") 
-                    a[1] = a[1]+x
-                    a[2] = a[2]+abs(x)
+           	        a[1] = a[1]+x
         	elif x>20:
             		#print("right")    
-                    a[1] = a[1]+x
-                    a[2] = a[2]+x
+            		a[1] = a[1]+x
         	time.sleep(.01)
 		results[idd] = a
 	print (threading.currentThread().getName(), 'Exiting '+str(idd))
@@ -103,13 +98,13 @@ print('Moving servo on channel 0, press Ctrl-C to quit...')
 def servo(action):
     print (action)
     action = list(map(scaling,action))
-    for i in range(8):
+    for i in range(4):
         pwm.set_pwm(i, 0,int( action[i]))
-    sleep(.2)
+    sleep(.1)
 
 def servoControl(idd,test_angles,test_angles2):
     print (threading.currentThread().getName(), 'Starting '+str(idd))
-    for u in range(servo_num):
+    for u in range(4):
     	servo(test_angles)
         servo(test_angles2)
     print (threading.currentThread().getName(), 'Exiting '+str(idd))
@@ -130,14 +125,13 @@ def loadFromFile(filename):
 def learningLoop(learning_episodes):
     a = []
     i=0
-    print("VVV")
     for i in range(learning_episodes):
         print("\n\n"+str(i)+"\n\n")
-        test_angles = np.zeros(servo_num)
-        test_angles2 = np.zeros(servo_num)
-        test_angles = np.random.choice([-.25,0,.25],servo_num)
+        test_angles = np.zeros(4)
+        test_angles2 = np.zeros(4)
+        test_angles = np.random.choice([-.25,0,.25],4)
 
-        for v in range(servo_num):
+        for v in range(4):
             test_angles2[v]=np.random.choice([-.25,0,.25],1)
             while test_angles2[v] == test_angles[v]:
                 test_angles2[v]=np.random.choice([-.25,0,.25],1)
@@ -150,25 +144,20 @@ def learningLoop(learning_episodes):
         w.join()
         t.join()
 	print(results)
-        a.append([results[i][0],results[i][2],results[i][1],[test_angles,test_angles2]])
+        a.append([results[i][0],results[i][1],[test_angles,test_angles2]])
 
-        servo([0,0,0,0,0,0,0,0])   
+        servo([0,0,0,0])   
         sleep(.1)
-	if i % 5==0:
-		sleep(2)
     return a
 
 learning_episodes = 100
 exitFlag = [0]*learning_episodes
 results = [None] * learning_episodes
-#while True:
-#	servo([0,0,0,0,0,0,0,0])
-#	servo([ 0,    0,    0.25 , 0.25 , 0.,   -0.25,  0. ,   0.  ])
-#	servo([ 0.25, -0.25, -0.25 , 0.  , -0.25 , 0.  , -0.25, -0.25])
+
 #a = learningLoop(learning_episodes)
 
-#writeToFile(a,'8servo_Test2')
-a = loadFromFile('8servo_Test2')
+#writeToFile(a,'Test_3_125')
+a = loadFromFile('Test_3_125')
 a_sorted = sorted(a, key=itemgetter(0),reverse=True)
 a_sorted_2 = sorted(a, key=itemgetter(1),reverse=True)
 print  (a_sorted)
@@ -200,17 +189,17 @@ print  (right)
 ###############################################
 print  ("forward")
 #sleep(3)
-for pp in range(6):
+for pp in range(0):
     print  ("forward")
     for p in range(40):
-        print(forward[pp+6])
-        servo(forward[pp+6][2][0])
-        servo(forward[pp+6][2][1])
+        print(forward[pp])
+        servo(forward[pp][2][0])
+        servo(forward[pp][2][1])
     sleep(1)
 
 print  ("Back")
 #sleep(3)
-for pp in range(5):
+for pp in range(0):
     print  ("Back")
     for p in range(40):
         print(Back[pp])
@@ -219,7 +208,7 @@ for pp in range(5):
     sleep(1)
 print  ("right")
 #sleep(3)
-for pp in range(5):
+for pp in range(0):
     print  ("right")
     for p in range(40):
         print(right[pp])
@@ -228,7 +217,7 @@ for pp in range(5):
     sleep(1)
 print  ("left")
 #sleep(3)
-for pp in range(5):
+for pp in range(0):
     print  ("left")
     for p in range(40):
         print(left[pp])
@@ -263,7 +252,7 @@ while True:
         print(avgFB[0]) 
 	print(avgFB[1])
 	print(abs(avgFB[1])) 
-        if ((avgFB[0]+400) < forward[0][0]) or (abs(avgFB[1])-50 > forward[0][1]):
+        if ((avgFB[0]+100) < forward[0][0]) or (abs(avgFB[1])-10 > forward[0][1]):
 	    print(avgFB[0]+100)
 	    print("learing again")
             a = learningLoop(learning_episodes)
